@@ -205,18 +205,27 @@
             min-height: 34px;
         }
 
+        /* ESTILO DA PÍLULA DE ASSUNTO ATUALIZADO */
         .question-topic {
-            display: inline-block;
-            background-color: rgba(138, 180, 248, 0.15);
-            color: var(--accent);
-            padding: 6px 12px;
-            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #ffffff;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 0.85em;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            border: 1px solid rgba(138, 180, 248, 0.3);
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 102, 204, 0.2);
             margin: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .question-topic:hover {
+            transform: scale(1.05);
         }
 
         .q-tools {
@@ -980,10 +989,11 @@
             ui.qContent.classList.add(animationDirection === 'right' ? 'slide-in-right' : 'slide-in-left');
         }
         
+        // MUDANÇA JS DO ASSUNTO
         let nomeDoAssunto = q.assunto || q.materia || q.disciplina || q.topico || q.categoria || "";
         if (nomeDoAssunto && String(nomeDoAssunto).trim() !== "") {
-            ui.qTopic.innerHTML = "<i class='ph-fill ph-tag'></i> " + nomeDoAssunto;
-            ui.qTopic.style.display = "inline-block";
+            ui.qTopic.innerHTML = "<i class='ph-bold ph-tag'></i> " + nomeDoAssunto;
+            ui.qTopic.style.display = "inline-flex";
         } else {
             ui.qTopic.style.display = "none";
         }
