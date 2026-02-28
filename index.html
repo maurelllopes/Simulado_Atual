@@ -26,7 +26,7 @@
             --border-color: #333;
             --btn-secondary-bg: transparent;
             --option-bg: #252526;
-            --highlight-bg: rgba(255, 213, 79, 0.35); /* Amarelo translúcido para dark mode */
+            --highlight-bg: rgba(255, 213, 79, 0.35);
         }
 
         /* --- TEMA CLARO (Estilo Mac) --- */
@@ -44,7 +44,7 @@
             --border-color: #d2d2d7;
             --btn-secondary-bg: #f5f5f7;
             --option-bg: #f5f5f7;
-            --highlight-bg: rgba(255, 204, 0, 0.5); /* Amarelo vivo para light mode */
+            --highlight-bg: rgba(255, 204, 0, 0.5);
         }
 
         body {
@@ -501,8 +501,9 @@
         <h1 style="color: var(--accent);"><i class="ph-fill ph-student"></i> Simulado Pro</h1>
         <p style="color: var(--text-muted); font-size: 1em; margin-bottom: 25px; text-align: center;">Carregue o arquivo do simulado:</p>
         
-        <input type="file" id="json-file" style="display: none;" onchange="handleFileUpload(event)">
-        <button class="btn-primary" onclick="document.getElementById('json-file').click()"><i class="ph ph-folder-open"></i> Escolher Arquivo</button>
+        <!-- CORREÇÃO AQUI: o input recebe accept=".json" e é chamado por uma função segura -->
+        <input type="file" id="json-file" accept=".json" style="display: none;" onchange="handleFileUpload(event)">
+        <button class="btn-primary" onclick="abrirSeletorDeArquivo()"><i class="ph ph-folder-open"></i> Escolher Arquivo</button>
         
         <p id="file-name-display" style="color: var(--accent); font-size: 0.95em; margin-top: 15px; text-align: center; font-weight: bold;"></p>
         
@@ -745,7 +746,7 @@
         window.speechSynthesis.speak(utterance);
     }
 
-    // --- NOVA FUNÇÃO: PEDIR EXPLICAÇÃO DA IA ---
+    // --- FUNÇÃO PARA PEDIR EXPLICAÇÃO DA IA ---
     function askAI() {
         const q = questions[currentQ];
         
@@ -910,6 +911,14 @@
         return array;
     }
 
+    // --- CORREÇÃO DO BOTÃO DE ARQUIVOS ---
+    function abrirSeletorDeArquivo() {
+        const fileInput = document.getElementById('json-file');
+        // Ao zerar o valor, forçamos o navegador a ler o mesmo arquivo de novo caso você escolha ele novamente!
+        fileInput.value = ''; 
+        fileInput.click();
+    }
+
     function handleFileUpload(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -937,6 +946,7 @@
                 ui.fileNameDisplay.innerHTML = "<i class='ph ph-x-circle'></i> Erro ao ler o arquivo";
                 ui.errorMsg.innerText = error.message;
                 ui.errorMsg.style.display = "block";
+                console.error("Erro na leitura do JSON:", error);
             }
         };
         reader.readAsText(file);
@@ -1125,7 +1135,7 @@
             btns[q.correctIndex].innerHTML = `<i class="ph-bold ph-check" style="position:absolute; right:15px; top:50%; transform:translateY(-50%);"></i>` + btns[q.correctIndex].innerHTML;
         }
 
-        // Criando o botão interativo da IA para colocar na caixa de Feedback
+        // Adicionando o Botão de Inteligência Artificial no Feedback
         const aiButtonHTML = `<button class="btn-ai-feedback" onclick="askAI()"><i class="ph-fill ph-sparkle"></i> IA: Não entendi, me explique melhor</button>`;
         
         if (selectedIndex === q.correctIndex) {
