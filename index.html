@@ -196,7 +196,7 @@
             transition: width 0.4s ease;
         }
 
-        /* --- FERRAMENTAS DA QUESTÃO (ASSUNTO, TTS, BANDEIRA) --- */
+        /* --- FERRAMENTAS DA QUESTÃO --- */
         .q-header-tools {
             display: flex;
             justify-content: space-between;
@@ -205,7 +205,6 @@
             min-height: 34px;
         }
 
-        /* ESTILO DA PÍLULA DE ASSUNTO ATUALIZADO */
         .question-topic {
             display: inline-flex;
             align-items: center;
@@ -251,6 +250,32 @@
         .icon-btn-small.active { color: #ffcc00; border-color: #ffcc00; }
         .icon-btn-small.active-tts { color: var(--accent); border-color: var(--accent); }
 
+        /* --- ESTILOS DO BOTÃO IA --- */
+        #btn-ai:hover { border-color: #a855f7; color: #a855f7; }
+        
+        .btn-ai-feedback {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: #a855f7;
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px dashed rgba(168, 85, 247, 0.4);
+            border-radius: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-ai-feedback:hover {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: #a855f7;
+            transform: scale(0.99);
+        }
+
         /* --- MARCA TEXTO --- */
         mark.custom-highlight {
             background-color: var(--highlight-bg);
@@ -289,7 +314,6 @@
 
         .option-btn:hover { border-color: var(--accent); }
 
-        /* Estilo da alternativa selecionada no Modo Prova */
         .option-btn.selected {
             border-color: var(--accent);
             background-color: rgba(138, 180, 248, 0.15);
@@ -409,7 +433,6 @@
             padding-bottom: 10px;
         }
         
-        /* Scrollbar customizada para o Grid */
         .grid-container::-webkit-scrollbar { width: 6px; }
         .grid-container::-webkit-scrollbar-track { background: transparent; }
         .grid-container::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 10px; }
@@ -483,7 +506,6 @@
         
         <p id="file-name-display" style="color: var(--accent); font-size: 0.95em; margin-top: 15px; text-align: center; font-weight: bold;"></p>
         
-        <!-- NOVO: Configuração do Modo do Simulado -->
         <div id="mode-selection" style="display: none; margin: 25px 0; text-align: center;">
             <label style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 8px; display: block;">Modo do Simulado:</label>
             <select id="simulado-mode" class="nav-select" style="width: 100%; max-width: 350px; padding: 12px; font-size: 1em;">
@@ -506,7 +528,6 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     Questão: 
                     <select id="q-nav" class="nav-select" onchange="jumpToQuestion(this.value)"></select>
-                    <!-- NOVO: Botão Mapa da Prova -->
                     <button class="icon-btn-small" onclick="toggleGridModal()" title="Mapa da Prova"><i class="ph-bold ph-squares-four"></i></button>
                 </div>
                 <div class="timer-container">
@@ -521,10 +542,11 @@
 
             <div id="q-content-area" style="transition: filter 0.3s;">
                 
-                <!-- Ferramentas Avançadas (Assunto, TTS e Flag) -->
+                <!-- Ferramentas Avançadas -->
                 <div class="q-header-tools">
                     <div class="question-topic" id="question-topic" style="display: none;"></div>
                     <div class="q-tools">
+                        <button class="icon-btn-small" id="btn-ai" onclick="askAI()" title="Aprofundar com IA"><i class="ph ph-sparkle"></i></button>
                         <button class="icon-btn-small" id="btn-tts" onclick="toggleTTS()" title="Ler em Voz Alta"><i class="ph ph-speaker-high"></i></button>
                         <button class="icon-btn-small" id="btn-flag" onclick="toggleFlag()" title="Sinalizar para Revisão"><i class="ph ph-flag"></i></button>
                     </div>
@@ -567,7 +589,7 @@
 
 </div>
 
-<!-- NOVO: Modal do Mapa da Prova -->
+<!-- Modal do Mapa da Prova -->
 <div id="grid-modal" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-header-grid">
@@ -580,12 +602,11 @@
 
 <script>
     let questions = [];
-    let userAnswers = [];
+    let userAnswers =[];
     let flaggedQuestions =[]; 
     let currentQ = 0;
     let pendingJsonData = null;
     
-    // NOVO: Controle de Estados Globais Adicionais
     let isExamMode = false; 
     let hasFinished = false; 
 
@@ -594,7 +615,6 @@
     let isPaused = false;
     let isReviewingErrors = false;
 
-    // Sistema de Áudio
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     let isMuted = false;
 
@@ -649,9 +669,8 @@
                         currentQ = data.currentQ || 0;
                         timeElapsed = data.timeElapsed || 0;
                         
-                        // NOVO: Restaura o modo prova
                         isExamMode = data.isExamMode || false;
-                        hasFinished = false; // Se está carregando save incompleto, não finalizou
+                        hasFinished = false;
                         if(ui.simuladoMode) ui.simuladoMode.value = isExamMode ? 'prova' : 'estudo';
 
                         ui.setup.style.display = 'none';
@@ -682,7 +701,6 @@
         if(isMuted) stopTTS();
     }
 
-    // --- LÓGICA DO TEXT-TO-SPEECH MELHORADA (LEITURA INTELIGENTE) ---
     function stopTTS() {
         window.speechSynthesis.cancel();
         ui.btnTTS.innerHTML = '<i class="ph ph-speaker-high"></i>';
@@ -699,10 +717,8 @@
         const q = questions[currentQ];
         const stripHTML = (html) => { const tmp = document.createElement("DIV"); tmp.innerHTML = html; return tmp.textContent || tmp.innerText || ""; };
         
-        // 1. Pega o texto limpo
         let textToRead = stripHTML(q.text);
 
-        // 2. FILTRO FONÉTICO: Ensina o Mac a ler termos técnicos e algarismos romanos
         textToRead = textToRead.replace(/\bI\s*-/g, "Afirmativa 1: ");
         textToRead = textToRead.replace(/\bII\s*-/g, "Afirmativa 2: ");
         textToRead = textToRead.replace(/\bIII\s*-/g, "Afirmativa 3: ");
@@ -729,7 +745,47 @@
         window.speechSynthesis.speak(utterance);
     }
 
-    // --- LÓGICA DA BANDEIRA DE DÚVIDA ---
+    // --- NOVA FUNÇÃO: PEDIR EXPLICAÇÃO DA IA ---
+    function askAI() {
+        const q = questions[currentQ];
+        
+        const stripHTML = (html) => { 
+            if (!html) return "";
+            const tmp = document.createElement("DIV"); 
+            tmp.innerHTML = html; 
+            return tmp.textContent || tmp.innerText || ""; 
+        };
+
+        let textToRead = stripHTML(q.text);
+        let nomeDoAssunto = q.assunto || q.materia || q.disciplina || q.topico || q.categoria || "";
+
+        let prompt = `Atue como um professor especialista com excelente didática. Por favor, me explique detalhadamente a questão abaixo.\n\n`;
+        
+        if (nomeDoAssunto && String(nomeDoAssunto).trim() !== "") {
+            prompt += `📌 Assunto: ${nomeDoAssunto}\n`;
+        }
+        prompt += `📝 Questão: ${textToRead}\n\nAlternativas:\n`;
+
+        q.options.forEach((opt, idx) => {
+            prompt += `${String.fromCharCode(65 + idx)}) ${stripHTML(opt)}\n`;
+        });
+
+        prompt += `\n✅ O gabarito correto é a letra ${String.fromCharCode(65 + q.correctIndex)}.\n`;
+
+        if (q.explanation && String(q.explanation).trim() !== "") {
+            prompt += `\n💡 Comentário original da questão: "${stripHTML(q.explanation)}"\n`;
+        }
+
+        prompt += `\nMinha dúvida: Ainda não entendi completamente. Pode me explicar o passo a passo lógico, mostrando os motivos que tornam a resposta certa correta, e detalhar os erros de cada uma das outras alternativas?`;
+
+        // Tenta copiar silenciosamente para a área de transferência
+        try { navigator.clipboard.writeText(prompt); } catch(e) {}
+
+        // Abre o link do ChatGPT em nova aba já com o prompt escrito
+        const url = `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
+        window.open(url, '_blank');
+    }
+
     function toggleFlag() {
         flaggedQuestions[currentQ] = !flaggedQuestions[currentQ];
         updateFlagUI();
@@ -747,7 +803,6 @@
         }
     }
 
-    // --- NOVA LÓGICA DO MAPA DA PROVA (GRID MODAL) ---
     function toggleGridModal() {
         const modal = document.getElementById('grid-modal');
         const gridContainer = document.getElementById('grid-container');
@@ -757,7 +812,6 @@
         } else {
             gridContainer.innerHTML = '';
             questions.forEach((q, idx) => {
-                // Oculta as questões no mapa se estiver na revisão exclusiva de erros
                 if(isReviewingErrors && (userAnswers[idx] === questions[idx].correctIndex || userAnswers[idx] === null)) {
                     return;
                 }
@@ -785,7 +839,6 @@
         }
     }
 
-    // Fechar Modal do Mapa ao clicar fora dele
     window.addEventListener('click', (e) => {
         const modal = document.getElementById('grid-modal');
         if (e.target === modal) {
@@ -793,7 +846,6 @@
         }
     });
 
-    // --- LÓGICA DO MARCA-TEXTO AUTOMÁTICO ---
     document.addEventListener('mouseup', () => {
         if (ui.activeQuiz.style.display === 'none' || isPaused) return;
         
@@ -846,7 +898,6 @@
 
     function saveProgress() {
         if(isReviewingErrors || hasFinished) return; 
-        // NOVO: Salvando a variável isExamMode para o caso do reload
         const state = { questions, userAnswers, currentQ, timeElapsed, flaggedQuestions, isExamMode };
         localStorage.setItem('simulado_mobile_save', JSON.stringify(state));
     }
@@ -878,7 +929,7 @@
 
                 pendingJsonData = data;
                 ui.fileNameDisplay.innerHTML = `<i class="ph ph-check-circle"></i> ${file.name} carregado!`;
-                ui.modeSelection.style.display = "block"; // Mostra a caixa de Modo Estudo/Prova
+                ui.modeSelection.style.display = "block"; 
                 ui.startBtn.style.display = "block";
                 
                 if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -897,7 +948,6 @@
         userAnswers = new Array(questions.length).fill(null);
         flaggedQuestions = new Array(questions.length).fill(false);
         
-        // NOVO: Define o modo escolhido
         isExamMode = ui.simuladoMode.value === 'prova';
         hasFinished = false; 
 
@@ -934,7 +984,7 @@
 
     function togglePause() {
         isPaused = !isPaused;
-        stopTTS(); // Para a leitura se pausar
+        stopTTS(); 
         if(isPaused) {
             stopTimer();
             ui.qContent.classList.add('blurred-content');
@@ -978,10 +1028,10 @@
     }
 
     function loadQuestion(animationDirection = 'right') {
-        stopTTS(); // Garante que a voz pare ao trocar de questão
+        stopTTS(); 
         const q = questions[currentQ];
         ui.qNav.value = currentQ;
-        updateFlagUI(); // Atualiza a cor da bandeira
+        updateFlagUI(); 
         
         ui.qContent.classList.remove('slide-in-right', 'slide-in-left');
         void ui.qContent.offsetWidth; 
@@ -989,7 +1039,6 @@
             ui.qContent.classList.add(animationDirection === 'right' ? 'slide-in-right' : 'slide-in-left');
         }
         
-        // MUDANÇA JS DO ASSUNTO
         let nomeDoAssunto = q.assunto || q.materia || q.disciplina || q.topico || q.categoria || "";
         if (nomeDoAssunto && String(nomeDoAssunto).trim() !== "") {
             ui.qTopic.innerHTML = "<i class='ph-bold ph-tag'></i> " + nomeDoAssunto;
@@ -1039,7 +1088,6 @@
     function checkAnswer(selectedIndex) {
         if (isPaused) return; 
 
-        // NOVO: No Modo Estudo ou na Revisão, bloqueia alteração. No Modo Prova, permite trocar.
         if ((!isExamMode || hasFinished) && userAnswers[currentQ] !== null) return; 
 
         userAnswers[currentQ] = selectedIndex;
@@ -1055,8 +1103,6 @@
         const q = questions[currentQ];
         const btns = ui.options.children;
         
-        // --- NOVA LÓGICA: MODO PROVA ---
-        // Se for Modo Prova e o simulado não terminou, ele só seleciona visualmente.
         if (isExamMode && !hasFinished) {
             Array.from(btns).forEach((btn, idx) => {
                 btn.classList.remove("selected");
@@ -1066,22 +1112,24 @@
             });
             ui.feedback.style.display = "none";
             ui.nextBtn.innerHTML = currentQ === questions.length - 1 ? 'Finalizar <i class="ph-fill ph-flag-checkered"></i>' : 'Próxima <i class="ph ph-arrow-right"></i>';
-            return; // Sai da função cedo sem mostrar verde/vermelho
+            return; 
         }
 
-        // --- MODO ESTUDO OU REVISÃO PÓS-PROVA ---
         Array.from(btns).forEach(btn => {
             btn.style.pointerEvents = "none";
-            btn.classList.remove("selected"); // Limpa qualquer highlight do modo prova
+            btn.classList.remove("selected"); 
         });
 
         if(btns[q.correctIndex]) {
             btns[q.correctIndex].classList.add("correct");
             btns[q.correctIndex].innerHTML = `<i class="ph-bold ph-check" style="position:absolute; right:15px; top:50%; transform:translateY(-50%);"></i>` + btns[q.correctIndex].innerHTML;
         }
+
+        // Criando o botão interativo da IA para colocar na caixa de Feedback
+        const aiButtonHTML = `<button class="btn-ai-feedback" onclick="askAI()"><i class="ph-fill ph-sparkle"></i> IA: Não entendi, me explique melhor</button>`;
         
         if (selectedIndex === q.correctIndex) {
-            ui.feedback.innerHTML = `<i class="ph-fill ph-check-circle" style="color:var(--success-border); font-size:1.2em; vertical-align:middle;"></i> <strong style="color:var(--success-border);">Correto!</strong><br><span style='color:var(--text-muted); font-size: 0.9em; display:block; margin-top:8px;'>${q.explanation || ''}</span>`;
+            ui.feedback.innerHTML = `<i class="ph-fill ph-check-circle" style="color:var(--success-border); font-size:1.2em; vertical-align:middle;"></i> <strong style="color:var(--success-border);">Correto!</strong><br><span style='color:var(--text-muted); font-size: 0.9em; display:block; margin-top:8px;'>${q.explanation || ''}</span> ${aiButtonHTML}`;
             if (isNewAnswer) {
                 playSound('correct');
                 triggerFireworks(1); 
@@ -1091,7 +1139,7 @@
                 btns[selectedIndex].classList.add("wrong");
                 btns[selectedIndex].innerHTML = `<i class="ph-bold ph-x" style="position:absolute; right:15px; top:50%; transform:translateY(-50%);"></i>` + btns[selectedIndex].innerHTML;
             }
-            ui.feedback.innerHTML = `<i class="ph-fill ph-x-circle" style="color:var(--error-border); font-size:1.2em; vertical-align:middle;"></i> <strong style="color:var(--error-border);">Incorreto.</strong><br><span style='color:var(--text-muted); font-size: 0.9em; display:block; margin-top:8px;'>${q.explanation || ''}</span>`;
+            ui.feedback.innerHTML = `<i class="ph-fill ph-x-circle" style="color:var(--error-border); font-size:1.2em; vertical-align:middle;"></i> <strong style="color:var(--error-border);">Incorreto.</strong><br><span style='color:var(--text-muted); font-size: 0.9em; display:block; margin-top:8px;'>${q.explanation || ''}</span> ${aiButtonHTML}`;
             if (isNewAnswer) {
                 playSound('wrong');
                 ui.qContent.classList.remove('shake-animation');
@@ -1130,12 +1178,11 @@
             loadQuestion('right');
             saveProgress();
         } else {
-            // NOVO: Verifica se há questões em branco no Modo Prova ao clicar em Finalizar
             if (isExamMode && !hasFinished) {
                 const blanks = userAnswers.filter(a => a === null).length;
                 if (blanks > 0) {
                     if (!confirm(`Você tem ${blanks} questão(ões) em branco. Deseja finalizar o simulado mesmo assim?`)) {
-                        return; // Cancela a finalização
+                        return; 
                     }
                 }
             }
@@ -1165,7 +1212,7 @@
         stopTimer();
         stopTTS();
         isReviewingErrors = false;
-        hasFinished = true; // Permite que a tela de revisão depois aplique o Visual Estudo
+        hasFinished = true; 
         
         let score = 0; let wrong = 0; let blank = 0;
 
@@ -1247,7 +1294,6 @@
         ui.progress.style.width = `${pct}%`;
     }
 
-    // --- MAGIC MOUSE / TRACKPAD MAC (SWIPE HORIZONTAL) ---
     let isMouseSwiping = false;
 
     window.addEventListener('wheel', (e) => {
