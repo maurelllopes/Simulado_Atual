@@ -26,7 +26,7 @@
             --border-color: #333;
             --btn-secondary-bg: transparent;
             --option-bg: #252526;
-            --highlight-bg: rgba(255, 213, 79, 0.35); /* Amarelo translúcido para dark mode */
+            --highlight-bg: rgba(255, 213, 79, 0.35);
         }
 
         /* --- TEMA CLARO (Estilo Mac) --- */
@@ -44,7 +44,7 @@
             --border-color: #d2d2d7;
             --btn-secondary-bg: #f5f5f7;
             --option-bg: #f5f5f7;
-            --highlight-bg: rgba(255, 204, 0, 0.5); /* Amarelo vivo para light mode */
+            --highlight-bg: rgba(255, 204, 0, 0.5);
         }
 
         body {
@@ -196,7 +196,7 @@
             transition: width 0.4s ease;
         }
 
-        /* --- FERRAMENTAS DA QUESTÃO (ASSUNTO, TTS, BANDEIRA) --- */
+        /* --- FERRAMENTAS DA QUESTÃO --- */
         .q-header-tools {
             display: flex;
             justify-content: space-between;
@@ -206,17 +206,25 @@
         }
 
         .question-topic {
-            display: inline-block;
-            background-color: rgba(138, 180, 248, 0.15);
-            color: var(--accent);
-            padding: 6px 12px;
-            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #ffffff;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 0.85em;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            border: 1px solid rgba(138, 180, 248, 0.3);
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 102, 204, 0.2);
             margin: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .question-topic:hover {
+            transform: scale(1.05);
         }
 
         .q-tools {
@@ -241,6 +249,32 @@
         .icon-btn-small:hover { border-color: var(--accent); color: var(--accent); }
         .icon-btn-small.active { color: #ffcc00; border-color: #ffcc00; }
         .icon-btn-small.active-tts { color: var(--accent); border-color: var(--accent); }
+
+        /* --- ESTILOS DO BOTÃO IA --- */
+        #btn-ai:hover { border-color: #a855f7; color: #a855f7; }
+        
+        .btn-ai-feedback {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: #a855f7;
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px dashed rgba(168, 85, 247, 0.4);
+            border-radius: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-ai-feedback:hover {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: #a855f7;
+            transform: scale(0.99);
+        }
 
         /* --- MARCA TEXTO --- */
         mark.custom-highlight {
@@ -280,7 +314,6 @@
 
         .option-btn:hover { border-color: var(--accent); }
 
-        /* Estilo da alternativa selecionada no Modo Prova */
         .option-btn.selected {
             border-color: var(--accent);
             background-color: rgba(138, 180, 248, 0.15);
@@ -345,6 +378,23 @@
 
         .blurred-content { filter: blur(10px); pointer-events: none; user-select: none; opacity: 0.6; }
 
+        /* --- AVISO DE TEMPO (NOVO) --- */
+        .time-pressure {
+            box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.6) inset;
+            border-radius: 8px;
+            padding: 10px;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .time-warning-blink {
+            animation: blinker-warning 1.5s linear infinite;
+        }
+        
+        @keyframes blinker-warning {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.1); }
+        }
+
         .chart-container {
             width: 200px;
             height: 200px;
@@ -400,7 +450,6 @@
             padding-bottom: 10px;
         }
         
-        /* Scrollbar customizada para o Grid */
         .grid-container::-webkit-scrollbar { width: 6px; }
         .grid-container::-webkit-scrollbar-track { background: transparent; }
         .grid-container::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 10px; }
@@ -469,12 +518,11 @@
         <h1 style="color: var(--accent);"><i class="ph-fill ph-student"></i> Simulado Pro</h1>
         <p style="color: var(--text-muted); font-size: 1em; margin-bottom: 25px; text-align: center;">Carregue o arquivo do simulado:</p>
         
-        <input type="file" id="json-file" style="display: none;" onchange="handleFileUpload(event)">
-        <button class="btn-primary" onclick="document.getElementById('json-file').click()"><i class="ph ph-folder-open"></i> Escolher Arquivo</button>
+        <input type="file" id="json-file" accept=".json" style="display: none;" onchange="handleFileUpload(event)">
+        <button class="btn-primary" onclick="abrirSeletorDeArquivo()"><i class="ph ph-folder-open"></i> Escolher Arquivo</button>
         
         <p id="file-name-display" style="color: var(--accent); font-size: 0.95em; margin-top: 15px; text-align: center; font-weight: bold;"></p>
         
-        <!-- NOVO: Configuração do Modo do Simulado -->
         <div id="mode-selection" style="display: none; margin: 25px 0; text-align: center;">
             <label style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 8px; display: block;">Modo do Simulado:</label>
             <select id="simulado-mode" class="nav-select" style="width: 100%; max-width: 350px; padding: 12px; font-size: 1em;">
@@ -497,10 +545,11 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     Questão: 
                     <select id="q-nav" class="nav-select" onchange="jumpToQuestion(this.value)"></select>
-                    <!-- NOVO: Botão Mapa da Prova -->
                     <button class="icon-btn-small" onclick="toggleGridModal()" title="Mapa da Prova"><i class="ph-bold ph-squares-four"></i></button>
                 </div>
                 <div class="timer-container">
+                    <!-- Ícone de Alerta de Tempo Oculto -->
+                    <i id="time-warning-icon" class="ph-fill ph-clock time-warning-blink" style="display:none; color: #ffcc00; font-size: 1.4em;" title="Atenção: Você está há mais de 3 minutos nesta questão!"></i>
                     <div class="timer" id="timer-display">00:00</div>
                     <button class="btn-pause" id="btn-pause" onclick="togglePause()"><i class="ph ph-pause"></i></button>
                 </div>
@@ -512,10 +561,11 @@
 
             <div id="q-content-area" style="transition: filter 0.3s;">
                 
-                <!-- Ferramentas Avançadas (Assunto, TTS e Flag) -->
+                <!-- Ferramentas Avançadas -->
                 <div class="q-header-tools">
                     <div class="question-topic" id="question-topic" style="display: none;"></div>
                     <div class="q-tools">
+                        <button class="icon-btn-small" id="btn-ai" onclick="askAI()" title="Aprofundar com IA"><i class="ph ph-sparkle"></i></button>
                         <button class="icon-btn-small" id="btn-tts" onclick="toggleTTS()" title="Ler em Voz Alta"><i class="ph ph-speaker-high"></i></button>
                         <button class="icon-btn-small" id="btn-flag" onclick="toggleFlag()" title="Sinalizar para Revisão"><i class="ph ph-flag"></i></button>
                     </div>
@@ -548,6 +598,10 @@
                 <button class="btn-primary" style="background-color: var(--success-border);" onclick="generatePDF()"><i class="ph ph-printer"></i> Salvar em PDF / Imprimir</button>
                 <button class="btn-secondary" style="border-color: var(--accent); color: var(--accent);" onclick="reviewQuiz()"><i class="ph ph-magnifying-glass"></i> Revisar Todas as Respostas</button>
                 <button class="btn-secondary" style="border-color: var(--error-border); color: var(--error-border);" id="btn-review-errors" onclick="reviewErrorsOnly()"><i class="ph ph-warning-circle"></i> Revisar Apenas Meus Erros</button>
+                
+                <!-- NOVO BOTÃO DE EXPORTAR ERROS -->
+                <button class="btn-secondary" style="border-color: #ff9500; color: #ff9500; display: none;" id="btn-export-errors" onclick="exportErrors()"><i class="ph ph-download-simple"></i> Exportar Caderno de Erros (JSON)</button>
+                
                 <button class="btn-secondary" onclick="restartQuiz()"><i class="ph ph-arrows-clockwise"></i> Fazer Novo Simulado</button>
             </div>
         </div>
@@ -558,7 +612,7 @@
 
 </div>
 
-<!-- NOVO: Modal do Mapa da Prova -->
+<!-- Modal do Mapa da Prova -->
 <div id="grid-modal" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-header-grid">
@@ -571,21 +625,20 @@
 
 <script>
     let questions = [];
-    let userAnswers = [];
+    let userAnswers =[];
     let flaggedQuestions =[]; 
     let currentQ = 0;
     let pendingJsonData = null;
     
-    // NOVO: Controle de Estados Globais Adicionais
     let isExamMode = false; 
     let hasFinished = false; 
 
     let timerInterval = null;
     let timeElapsed = 0;
+    let currentQuestionTimeElapsed = 0; // NOVO: Tempo gasto APENAS na questão atual
     let isPaused = false;
     let isReviewingErrors = false;
 
-    // Sistema de Áudio
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     let isMuted = false;
 
@@ -604,6 +657,7 @@
         progress: document.getElementById('progress'),
         qNav: document.getElementById('q-nav'),
         timerDisplay: document.getElementById('timer-display'),
+        timeWarningIcon: document.getElementById('time-warning-icon'), // NOVO
         btnPause: document.getElementById('btn-pause'),
         btnTTS: document.getElementById('btn-tts'),
         btnFlag: document.getElementById('btn-flag'),
@@ -611,6 +665,7 @@
         avgTime: document.getElementById('avg-time'),
         finalScore: document.getElementById('final-score'),
         btnReviewErrors: document.getElementById('btn-review-errors'),
+        btnExportErrors: document.getElementById('btn-export-errors'), // NOVO
         errorMsg: document.getElementById('error-msg'),
         fileNameDisplay: document.getElementById('file-name-display'),
         startBtn: document.getElementById('start-btn'),
@@ -640,9 +695,8 @@
                         currentQ = data.currentQ || 0;
                         timeElapsed = data.timeElapsed || 0;
                         
-                        // NOVO: Restaura o modo prova
                         isExamMode = data.isExamMode || false;
-                        hasFinished = false; // Se está carregando save incompleto, não finalizou
+                        hasFinished = false;
                         if(ui.simuladoMode) ui.simuladoMode.value = isExamMode ? 'prova' : 'estudo';
 
                         ui.setup.style.display = 'none';
@@ -673,7 +727,6 @@
         if(isMuted) stopTTS();
     }
 
-    // --- LÓGICA DO TEXT-TO-SPEECH MELHORADA (LEITURA INTELIGENTE) ---
     function stopTTS() {
         window.speechSynthesis.cancel();
         ui.btnTTS.innerHTML = '<i class="ph ph-speaker-high"></i>';
@@ -690,10 +743,8 @@
         const q = questions[currentQ];
         const stripHTML = (html) => { const tmp = document.createElement("DIV"); tmp.innerHTML = html; return tmp.textContent || tmp.innerText || ""; };
         
-        // 1. Pega o texto limpo
         let textToRead = stripHTML(q.text);
 
-        // 2. FILTRO FONÉTICO: Ensina o Mac a ler termos técnicos e algarismos romanos
         textToRead = textToRead.replace(/\bI\s*-/g, "Afirmativa 1: ");
         textToRead = textToRead.replace(/\bII\s*-/g, "Afirmativa 2: ");
         textToRead = textToRead.replace(/\bIII\s*-/g, "Afirmativa 3: ");
@@ -720,7 +771,47 @@
         window.speechSynthesis.speak(utterance);
     }
 
-    // --- LÓGICA DA BANDEIRA DE DÚVIDA ---
+    // --- FUNÇÃO PARA PEDIR EXPLICAÇÃO DA IA ---
+    function askAI() {
+        const q = questions[currentQ];
+        
+        const stripHTML = (html) => { 
+            if (!html) return "";
+            const tmp = document.createElement("DIV"); 
+            tmp.innerHTML = html; 
+            return tmp.textContent || tmp.innerText || ""; 
+        };
+
+        let textToRead = stripHTML(q.text);
+        let nomeDoAssunto = q.assunto || q.materia || q.disciplina || q.topico || q.categoria || "";
+
+        let prompt = `Atue como um professor especialista com excelente didática. Por favor, me explique detalhadamente a questão abaixo.\n\n`;
+        
+        if (nomeDoAssunto && String(nomeDoAssunto).trim() !== "") {
+            prompt += `📌 Assunto: ${nomeDoAssunto}\n`;
+        }
+        prompt += `📝 Questão: ${textToRead}\n\nAlternativas:\n`;
+
+        q.options.forEach((opt, idx) => {
+            prompt += `${String.fromCharCode(65 + idx)}) ${stripHTML(opt)}\n`;
+        });
+
+        prompt += `\n✅ O gabarito correto é a letra ${String.fromCharCode(65 + q.correctIndex)}.\n`;
+
+        if (q.explanation && String(q.explanation).trim() !== "") {
+            prompt += `\n💡 Comentário original da questão: "${stripHTML(q.explanation)}"\n`;
+        }
+
+        prompt += `\nMinha dúvida: Ainda não entendi completamente. Pode me explicar o passo a passo lógico, mostrando os motivos que tornam a resposta certa correta, e detalhar os erros de cada uma das outras alternativas?`;
+
+        // Tenta copiar silenciosamente para a área de transferência
+        try { navigator.clipboard.writeText(prompt); } catch(e) {}
+
+        // Abre o link do ChatGPT em nova aba já com o prompt escrito
+        const url = `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
+        window.open(url, '_blank');
+    }
+
     function toggleFlag() {
         flaggedQuestions[currentQ] = !flaggedQuestions[currentQ];
         updateFlagUI();
@@ -738,7 +829,6 @@
         }
     }
 
-    // --- NOVA LÓGICA DO MAPA DA PROVA (GRID MODAL) ---
     function toggleGridModal() {
         const modal = document.getElementById('grid-modal');
         const gridContainer = document.getElementById('grid-container');
@@ -748,7 +838,6 @@
         } else {
             gridContainer.innerHTML = '';
             questions.forEach((q, idx) => {
-                // Oculta as questões no mapa se estiver na revisão exclusiva de erros
                 if(isReviewingErrors && (userAnswers[idx] === questions[idx].correctIndex || userAnswers[idx] === null)) {
                     return;
                 }
@@ -776,7 +865,6 @@
         }
     }
 
-    // Fechar Modal do Mapa ao clicar fora dele
     window.addEventListener('click', (e) => {
         const modal = document.getElementById('grid-modal');
         if (e.target === modal) {
@@ -784,7 +872,6 @@
         }
     });
 
-    // --- LÓGICA DO MARCA-TEXTO AUTOMÁTICO ---
     document.addEventListener('mouseup', () => {
         if (ui.activeQuiz.style.display === 'none' || isPaused) return;
         
@@ -837,7 +924,6 @@
 
     function saveProgress() {
         if(isReviewingErrors || hasFinished) return; 
-        // NOVO: Salvando a variável isExamMode para o caso do reload
         const state = { questions, userAnswers, currentQ, timeElapsed, flaggedQuestions, isExamMode };
         localStorage.setItem('simulado_mobile_save', JSON.stringify(state));
     }
@@ -848,6 +934,12 @@
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
+    }
+
+    function abrirSeletorDeArquivo() {
+        const fileInput = document.getElementById('json-file');
+        fileInput.value = ''; 
+        fileInput.click();
     }
 
     function handleFileUpload(event) {
@@ -869,7 +961,7 @@
 
                 pendingJsonData = data;
                 ui.fileNameDisplay.innerHTML = `<i class="ph ph-check-circle"></i> ${file.name} carregado!`;
-                ui.modeSelection.style.display = "block"; // Mostra a caixa de Modo Estudo/Prova
+                ui.modeSelection.style.display = "block"; 
                 ui.startBtn.style.display = "block";
                 
                 if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -877,6 +969,7 @@
                 ui.fileNameDisplay.innerHTML = "<i class='ph ph-x-circle'></i> Erro ao ler o arquivo";
                 ui.errorMsg.innerText = error.message;
                 ui.errorMsg.style.display = "block";
+                console.error("Erro na leitura do JSON:", error);
             }
         };
         reader.readAsText(file);
@@ -888,11 +981,11 @@
         userAnswers = new Array(questions.length).fill(null);
         flaggedQuestions = new Array(questions.length).fill(false);
         
-        // NOVO: Define o modo escolhido
         isExamMode = ui.simuladoMode.value === 'prova';
         hasFinished = false; 
 
         timeElapsed = 0;
+        currentQuestionTimeElapsed = 0; // Reset
         isReviewingErrors = false;
         ui.setup.style.display = 'none';
         ui.quiz.style.display = 'block';
@@ -914,7 +1007,16 @@
         updateTimerDisplay();
         timerInterval = setInterval(() => {
             timeElapsed++;
+            currentQuestionTimeElapsed++; // Incrementa o timer específico da questão
+            
             updateTimerDisplay();
+
+            // Lógica do cronômetro invisível por questão (Aviso após 120 segundos = 2 min)
+            if (currentQuestionTimeElapsed >= 120 && !isReviewingErrors && !hasFinished) {
+                ui.qContent.classList.add('time-pressure');
+                if (ui.timeWarningIcon) ui.timeWarningIcon.style.display = 'inline-block';
+            }
+
             if(timeElapsed % 10 === 0) saveProgress(); 
         }, 1000);
     }
@@ -925,7 +1027,7 @@
 
     function togglePause() {
         isPaused = !isPaused;
-        stopTTS(); // Para a leitura se pausar
+        stopTTS(); 
         if(isPaused) {
             stopTimer();
             ui.qContent.classList.add('blurred-content');
@@ -969,10 +1071,16 @@
     }
 
     function loadQuestion(animationDirection = 'right') {
-        stopTTS(); // Garante que a voz pare ao trocar de questão
+        stopTTS(); 
+        
+        // RESETAR AVISO DE TEMPO DA QUESTÃO
+        currentQuestionTimeElapsed = 0; 
+        ui.qContent.classList.remove('time-pressure');
+        if (ui.timeWarningIcon) ui.timeWarningIcon.style.display = 'none';
+
         const q = questions[currentQ];
         ui.qNav.value = currentQ;
-        updateFlagUI(); // Atualiza a cor da bandeira
+        updateFlagUI(); 
         
         ui.qContent.classList.remove('slide-in-right', 'slide-in-left');
         void ui.qContent.offsetWidth; 
@@ -982,8 +1090,8 @@
         
         let nomeDoAssunto = q.assunto || q.materia || q.disciplina || q.topico || q.categoria || "";
         if (nomeDoAssunto && String(nomeDoAssunto).trim() !== "") {
-            ui.qTopic.innerHTML = "<i class='ph-fill ph-tag'></i> " + nomeDoAssunto;
-            ui.qTopic.style.display = "inline-block";
+            ui.qTopic.innerHTML = "<i class='ph-bold ph-tag'></i> " + nomeDoAssunto;
+            ui.qTopic.style.display = "inline-flex";
         } else {
             ui.qTopic.style.display = "none";
         }
@@ -1029,7 +1137,6 @@
     function checkAnswer(selectedIndex) {
         if (isPaused) return; 
 
-        // NOVO: No Modo Estudo ou na Revisão, bloqueia alteração. No Modo Prova, permite trocar.
         if ((!isExamMode || hasFinished) && userAnswers[currentQ] !== null) return; 
 
         userAnswers[currentQ] = selectedIndex;
@@ -1045,8 +1152,6 @@
         const q = questions[currentQ];
         const btns = ui.options.children;
         
-        // --- NOVA LÓGICA: MODO PROVA ---
-        // Se for Modo Prova e o simulado não terminou, ele só seleciona visualmente.
         if (isExamMode && !hasFinished) {
             Array.from(btns).forEach((btn, idx) => {
                 btn.classList.remove("selected");
@@ -1056,22 +1161,23 @@
             });
             ui.feedback.style.display = "none";
             ui.nextBtn.innerHTML = currentQ === questions.length - 1 ? 'Finalizar <i class="ph-fill ph-flag-checkered"></i>' : 'Próxima <i class="ph ph-arrow-right"></i>';
-            return; // Sai da função cedo sem mostrar verde/vermelho
+            return; 
         }
 
-        // --- MODO ESTUDO OU REVISÃO PÓS-PROVA ---
         Array.from(btns).forEach(btn => {
             btn.style.pointerEvents = "none";
-            btn.classList.remove("selected"); // Limpa qualquer highlight do modo prova
+            btn.classList.remove("selected"); 
         });
 
         if(btns[q.correctIndex]) {
             btns[q.correctIndex].classList.add("correct");
             btns[q.correctIndex].innerHTML = `<i class="ph-bold ph-check" style="position:absolute; right:15px; top:50%; transform:translateY(-50%);"></i>` + btns[q.correctIndex].innerHTML;
         }
+
+        const aiButtonHTML = `<button class="btn-ai-feedback" onclick="askAI()"><i class="ph-fill ph-sparkle"></i> IA: Não entendi, me explique melhor</button>`;
         
         if (selectedIndex === q.correctIndex) {
-            ui.feedback.innerHTML = `<i class="ph-fill ph-check-circle" style="color:var(--success-border); font-size:1.2em; vertical-align:middle;"></i> <strong style="color:var(--success-border);">Correto!</strong><br><span style='color:var(--text-muted); font-size: 0.9em; display:block; margin-top:8px;'>${q.explanation || ''}</span>`;
+            ui.feedback.innerHTML = `<i class="ph-fill ph-check-circle" style="color:var(--success-border); font-size:1.2em; vertical-align:middle;"></i> <strong style="color:var(--success-border);">Correto!</strong><br><span style='color:var(--text-muted); font-size: 0.9em; display:block; margin-top:8px;'>${q.explanation || ''}</span> ${aiButtonHTML}`;
             if (isNewAnswer) {
                 playSound('correct');
                 triggerFireworks(1); 
@@ -1081,7 +1187,7 @@
                 btns[selectedIndex].classList.add("wrong");
                 btns[selectedIndex].innerHTML = `<i class="ph-bold ph-x" style="position:absolute; right:15px; top:50%; transform:translateY(-50%);"></i>` + btns[selectedIndex].innerHTML;
             }
-            ui.feedback.innerHTML = `<i class="ph-fill ph-x-circle" style="color:var(--error-border); font-size:1.2em; vertical-align:middle;"></i> <strong style="color:var(--error-border);">Incorreto.</strong><br><span style='color:var(--text-muted); font-size: 0.9em; display:block; margin-top:8px;'>${q.explanation || ''}</span>`;
+            ui.feedback.innerHTML = `<i class="ph-fill ph-x-circle" style="color:var(--error-border); font-size:1.2em; vertical-align:middle;"></i> <strong style="color:var(--error-border);">Incorreto.</strong><br><span style='color:var(--text-muted); font-size: 0.9em; display:block; margin-top:8px;'>${q.explanation || ''}</span> ${aiButtonHTML}`;
             if (isNewAnswer) {
                 playSound('wrong');
                 ui.qContent.classList.remove('shake-animation');
@@ -1120,12 +1226,11 @@
             loadQuestion('right');
             saveProgress();
         } else {
-            // NOVO: Verifica se há questões em branco no Modo Prova ao clicar em Finalizar
             if (isExamMode && !hasFinished) {
                 const blanks = userAnswers.filter(a => a === null).length;
                 if (blanks > 0) {
                     if (!confirm(`Você tem ${blanks} questão(ões) em branco. Deseja finalizar o simulado mesmo assim?`)) {
-                        return; // Cancela a finalização
+                        return; 
                     }
                 }
             }
@@ -1155,7 +1260,7 @@
         stopTimer();
         stopTTS();
         isReviewingErrors = false;
-        hasFinished = true; // Permite que a tela de revisão depois aplique o Visual Estudo
+        hasFinished = true; 
         
         let score = 0; let wrong = 0; let blank = 0;
 
@@ -1177,11 +1282,44 @@
         ui.finalScore.innerText = `${score} / ${questions.length}`;
         
         ui.btnReviewErrors.style.display = wrong === 0 ? 'none' : 'block';
+        
+        // NOVO: Exibe o botão de exportar caso o aluno tenha errado algo ou deixado em branco
+        ui.btnExportErrors.style.display = (wrong > 0 || blank > 0) ? 'block' : 'none';
+
         localStorage.removeItem('simulado_mobile_save'); 
         
         if (score >= questions.length / 2) triggerFireworks(3); 
 
         renderChart(score, wrong, blank);
+    }
+
+    // --- NOVA FUNÇÃO: EXPORTAR CADERNO DE ERROS ---
+    function exportErrors() {
+        // Filtra todas as questões onde a resposta do usuário foi DIFERENTE do gabarito correto
+        const incorrectQuestions = questions.filter((q, i) => userAnswers[i] !== q.correctIndex);
+        
+        if (incorrectQuestions.length === 0) {
+            alert("Você não cometeu nenhum erro! Caderno de erros vazio.");
+            return;
+        }
+
+        // Transforma as questões filtradas de volta para Texto JSON formatado
+        const dataStr = JSON.stringify(incorrectQuestions, null, 2);
+        
+        // Cria um "arquivo" virtual (Blob)
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        
+        // Gera o gatilho para Download
+        const a = document.createElement('a');
+        a.href = url;
+        const dataFormatada = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+        a.download = `caderno_erros_${dataFormatada}.json`;
+        
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     }
 
     function renderChart(correct, wrong, blank) {
@@ -1237,7 +1375,6 @@
         ui.progress.style.width = `${pct}%`;
     }
 
-    // --- MAGIC MOUSE / TRACKPAD MAC (SWIPE HORIZONTAL) ---
     let isMouseSwiping = false;
 
     window.addEventListener('wheel', (e) => {
