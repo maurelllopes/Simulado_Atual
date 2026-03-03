@@ -1012,7 +1012,7 @@
             updateTimerDisplay();
 
             // Lógica do cronômetro invisível por questão (Aviso após 180 segundos = 3 min)
-            if (currentQuestionTimeElapsed >= 180 && !isReviewingErrors && !hasFinished) {
+            if (currentQuestionTimeElapsed >= 120 && !isReviewingErrors && !hasFinished) {
                 ui.qContent.classList.add('time-pressure');
                 if (ui.timeWarningIcon) ui.timeWarningIcon.style.display = 'inline-block';
             }
