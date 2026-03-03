@@ -378,6 +378,23 @@
 
         .blurred-content { filter: blur(10px); pointer-events: none; user-select: none; opacity: 0.6; }
 
+        /* --- AVISO DE TEMPO (NOVO) --- */
+        .time-pressure {
+            box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.6) inset;
+            border-radius: 8px;
+            padding: 10px;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .time-warning-blink {
+            animation: blinker-warning 1.5s linear infinite;
+        }
+        
+        @keyframes blinker-warning {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.1); }
+        }
+
         .chart-container {
             width: 200px;
             height: 200px;
@@ -501,7 +518,6 @@
         <h1 style="color: var(--accent);"><i class="ph-fill ph-student"></i> Simulado Pro</h1>
         <p style="color: var(--text-muted); font-size: 1em; margin-bottom: 25px; text-align: center;">Carregue o arquivo do simulado:</p>
         
-        <!-- CORREÇÃO AQUI: o input recebe accept=".json" e é chamado por uma função segura -->
         <input type="file" id="json-file" accept=".json" style="display: none;" onchange="handleFileUpload(event)">
         <button class="btn-primary" onclick="abrirSeletorDeArquivo()"><i class="ph ph-folder-open"></i> Escolher Arquivo</button>
         
@@ -532,6 +548,8 @@
                     <button class="icon-btn-small" onclick="toggleGridModal()" title="Mapa da Prova"><i class="ph-bold ph-squares-four"></i></button>
                 </div>
                 <div class="timer-container">
+                    <!-- Ícone de Alerta de Tempo Oculto -->
+                    <i id="time-warning-icon" class="ph-fill ph-clock time-warning-blink" style="display:none; color: #ffcc00; font-size: 1.4em;" title="Atenção: Você está há mais de 3 minutos nesta questão!"></i>
                     <div class="timer" id="timer-display">00:00</div>
                     <button class="btn-pause" id="btn-pause" onclick="togglePause()"><i class="ph ph-pause"></i></button>
                 </div>
@@ -580,6 +598,10 @@
                 <button class="btn-primary" style="background-color: var(--success-border);" onclick="generatePDF()"><i class="ph ph-printer"></i> Salvar em PDF / Imprimir</button>
                 <button class="btn-secondary" style="border-color: var(--accent); color: var(--accent);" onclick="reviewQuiz()"><i class="ph ph-magnifying-glass"></i> Revisar Todas as Respostas</button>
                 <button class="btn-secondary" style="border-color: var(--error-border); color: var(--error-border);" id="btn-review-errors" onclick="reviewErrorsOnly()"><i class="ph ph-warning-circle"></i> Revisar Apenas Meus Erros</button>
+                
+                <!-- NOVO BOTÃO DE EXPORTAR ERROS -->
+                <button class="btn-secondary" style="border-color: #ff9500; color: #ff9500; display: none;" id="btn-export-errors" onclick="exportErrors()"><i class="ph ph-download-simple"></i> Exportar Caderno de Erros (JSON)</button>
+                
                 <button class="btn-secondary" onclick="restartQuiz()"><i class="ph ph-arrows-clockwise"></i> Fazer Novo Simulado</button>
             </div>
         </div>
@@ -613,6 +635,7 @@
 
     let timerInterval = null;
     let timeElapsed = 0;
+    let currentQuestionTimeElapsed = 0; // NOVO: Tempo gasto APENAS na questão atual
     let isPaused = false;
     let isReviewingErrors = false;
 
@@ -634,6 +657,7 @@
         progress: document.getElementById('progress'),
         qNav: document.getElementById('q-nav'),
         timerDisplay: document.getElementById('timer-display'),
+        timeWarningIcon: document.getElementById('time-warning-icon'), // NOVO
         btnPause: document.getElementById('btn-pause'),
         btnTTS: document.getElementById('btn-tts'),
         btnFlag: document.getElementById('btn-flag'),
@@ -641,6 +665,7 @@
         avgTime: document.getElementById('avg-time'),
         finalScore: document.getElementById('final-score'),
         btnReviewErrors: document.getElementById('btn-review-errors'),
+        btnExportErrors: document.getElementById('btn-export-errors'), // NOVO
         errorMsg: document.getElementById('error-msg'),
         fileNameDisplay: document.getElementById('file-name-display'),
         startBtn: document.getElementById('start-btn'),
@@ -911,10 +936,8 @@
         return array;
     }
 
-    // --- CORREÇÃO DO BOTÃO DE ARQUIVOS ---
     function abrirSeletorDeArquivo() {
         const fileInput = document.getElementById('json-file');
-        // Ao zerar o valor, forçamos o navegador a ler o mesmo arquivo de novo caso você escolha ele novamente!
         fileInput.value = ''; 
         fileInput.click();
     }
@@ -962,6 +985,7 @@
         hasFinished = false; 
 
         timeElapsed = 0;
+        currentQuestionTimeElapsed = 0; // Reset
         isReviewingErrors = false;
         ui.setup.style.display = 'none';
         ui.quiz.style.display = 'block';
@@ -983,7 +1007,16 @@
         updateTimerDisplay();
         timerInterval = setInterval(() => {
             timeElapsed++;
+            currentQuestionTimeElapsed++; // Incrementa o timer específico da questão
+            
             updateTimerDisplay();
+
+            // Lógica do cronômetro invisível por questão (Aviso após 180 segundos = 3 min)
+            if (currentQuestionTimeElapsed >= 180 && !isReviewingErrors && !hasFinished) {
+                ui.qContent.classList.add('time-pressure');
+                if (ui.timeWarningIcon) ui.timeWarningIcon.style.display = 'inline-block';
+            }
+
             if(timeElapsed % 10 === 0) saveProgress(); 
         }, 1000);
     }
@@ -1039,6 +1072,12 @@
 
     function loadQuestion(animationDirection = 'right') {
         stopTTS(); 
+        
+        // RESETAR AVISO DE TEMPO DA QUESTÃO
+        currentQuestionTimeElapsed = 0; 
+        ui.qContent.classList.remove('time-pressure');
+        if (ui.timeWarningIcon) ui.timeWarningIcon.style.display = 'none';
+
         const q = questions[currentQ];
         ui.qNav.value = currentQ;
         updateFlagUI(); 
@@ -1135,7 +1174,6 @@
             btns[q.correctIndex].innerHTML = `<i class="ph-bold ph-check" style="position:absolute; right:15px; top:50%; transform:translateY(-50%);"></i>` + btns[q.correctIndex].innerHTML;
         }
 
-        // Adicionando o Botão de Inteligência Artificial no Feedback
         const aiButtonHTML = `<button class="btn-ai-feedback" onclick="askAI()"><i class="ph-fill ph-sparkle"></i> IA: Não entendi, me explique melhor</button>`;
         
         if (selectedIndex === q.correctIndex) {
@@ -1244,11 +1282,44 @@
         ui.finalScore.innerText = `${score} / ${questions.length}`;
         
         ui.btnReviewErrors.style.display = wrong === 0 ? 'none' : 'block';
+        
+        // NOVO: Exibe o botão de exportar caso o aluno tenha errado algo ou deixado em branco
+        ui.btnExportErrors.style.display = (wrong > 0 || blank > 0) ? 'block' : 'none';
+
         localStorage.removeItem('simulado_mobile_save'); 
         
         if (score >= questions.length / 2) triggerFireworks(3); 
 
         renderChart(score, wrong, blank);
+    }
+
+    // --- NOVA FUNÇÃO: EXPORTAR CADERNO DE ERROS ---
+    function exportErrors() {
+        // Filtra todas as questões onde a resposta do usuário foi DIFERENTE do gabarito correto
+        const incorrectQuestions = questions.filter((q, i) => userAnswers[i] !== q.correctIndex);
+        
+        if (incorrectQuestions.length === 0) {
+            alert("Você não cometeu nenhum erro! Caderno de erros vazio.");
+            return;
+        }
+
+        // Transforma as questões filtradas de volta para Texto JSON formatado
+        const dataStr = JSON.stringify(incorrectQuestions, null, 2);
+        
+        // Cria um "arquivo" virtual (Blob)
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        
+        // Gera o gatilho para Download
+        const a = document.createElement('a');
+        a.href = url;
+        const dataFormatada = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+        a.download = `caderno_erros_${dataFormatada}.json`;
+        
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     }
 
     function renderChart(correct, wrong, blank) {
