@@ -131,6 +131,43 @@
         
         .btn-secondary:active { background-color: var(--border-color); }
 
+        /* --- MULTI-UPLOAD UI --- */
+        .upload-container { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .upload-box { flex: 1; min-width: 250px; background: rgba(0,0,0,0.03); padding: 20px; border-radius: 12px; border: 1px dashed var(--border-color); text-align: center; }
+        body:not(.light-theme) .upload-box { background: rgba(255,255,255,0.02); }
+        .upload-box p { margin-top: 0; font-weight: bold; margin-bottom: 15px; color: var(--text-main); }
+        .file-name { color: var(--accent); font-size: 0.9em; margin-top: 15px; font-weight: bold; min-height: 20px; }
+
+        /* --- ABAS DOS SIMULADOS --- */
+        .quiz-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: var(--option-bg);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .tab-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        .tab-btn:hover { color: var(--text-main); }
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -196,7 +233,6 @@
             transition: width 0.4s ease;
         }
 
-        /* --- FERRAMENTAS DA QUESTÃO --- */
         .q-header-tools {
             display: flex;
             justify-content: space-between;
@@ -223,14 +259,9 @@
             transition: transform 0.2s ease;
         }
 
-        .question-topic:hover {
-            transform: scale(1.05);
-        }
+        .question-topic:hover { transform: scale(1.05); }
 
-        .q-tools {
-            display: flex;
-            gap: 8px;
-        }
+        .q-tools { display: flex; gap: 8px; }
 
         .icon-btn-small {
             background: var(--option-bg);
@@ -250,9 +281,6 @@
         .icon-btn-small.active { color: #ffcc00; border-color: #ffcc00; }
         .icon-btn-small.active-tts { color: var(--accent); border-color: var(--accent); }
 
-        /* --- ESTILOS DO BOTÃO IA --- */
-        #btn-ai:hover { border-color: #a855f7; color: #a855f7; }
-        
         .btn-ai-feedback {
             width: 100%;
             display: flex;
@@ -276,7 +304,6 @@
             transform: scale(0.99);
         }
 
-        /* --- MARCA TEXTO --- */
         mark.custom-highlight {
             background-color: var(--highlight-bg);
             color: inherit;
@@ -292,11 +319,7 @@
             color: var(--text-main);
         }
 
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .options { display: flex; flex-direction: column; gap: 12px; }
 
         .option-btn {
             background-color: var(--option-bg);
@@ -313,15 +336,8 @@
         }
 
         .option-btn:hover { border-color: var(--accent); }
-
-        .option-btn.selected {
-            border-color: var(--accent);
-            background-color: rgba(138, 180, 248, 0.15);
-        }
-        body.light-theme .option-btn.selected {
-            background-color: rgba(0, 102, 204, 0.08);
-        }
-
+        .option-btn.selected { border-color: var(--accent); background-color: rgba(138, 180, 248, 0.15); }
+        body.light-theme .option-btn.selected { background-color: rgba(0, 102, 204, 0.08); }
         .option-btn.correct { background-color: var(--success); border-color: var(--success-border); color: #fff; }
         .option-btn.wrong { background-color: var(--error); border-color: var(--error-border); color: #fff; }
 
@@ -351,19 +367,11 @@
         #result-area { display: none; text-align: center; padding: 10px 0; }
         .score-box { font-size: 4em; font-weight: 800; color: var(--accent); margin: 5px 0 20px 0; letter-spacing: -1px; }
         
-        .action-buttons {
-            display: flex;
-            flex-direction: column; 
-            gap: 12px;
-            margin-top: 30px;
-        }
+        .action-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; }
 
-        /* --- ANIMAÇÕES E EFEITOS (Mac Style) --- */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .shake-animation {
-            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-        }
+        .shake-animation { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake {
             10%, 90% { transform: translate3d(-2px, 0, 0); }
             20%, 80% { transform: translate3d(4px, 0, 0); }
@@ -378,123 +386,70 @@
 
         .blurred-content { filter: blur(10px); pointer-events: none; user-select: none; opacity: 0.6; }
 
-        /* --- AVISO DE TEMPO (NOVO) --- */
         .time-pressure {
             box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.6) inset;
             border-radius: 8px;
             padding: 10px;
             transition: box-shadow 0.3s ease;
         }
-        
-        .time-warning-blink {
-            animation: blinker-warning 1.5s linear infinite;
-        }
-        
+        .time-warning-blink { animation: blinker-warning 1.5s linear infinite; }
         @keyframes blinker-warning {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.3; transform: scale(1.1); }
         }
 
-        .chart-container {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 20px auto;
-        }
+        .chart-container { width: 200px; height: 200px; margin: 0 auto 20px auto; }
 
-        /* --- MODAL DO MAPA DA PROVA (GRID) --- */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
         }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        
         .modal-content {
-            background: var(--card-bg);
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
+            background: var(--card-bg); width: 90%; max-width: 500px; max-height: 80vh;
+            border-radius: 16px; padding: 20px; display: flex; flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); transform: translateY(20px); transition: transform 0.3s ease;
         }
         .modal-overlay.active .modal-content { transform: translateY(0); }
         
         .modal-header-grid {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
         }
         .modal-header-grid h3 { margin: 0; color: var(--text-main); font-size: 1.2em; display: flex; align-items: center; gap: 8px; }
         
         .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-            gap: 10px;
-            overflow-y: auto;
-            padding-bottom: 10px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 10px; overflow-y: auto; padding-bottom: 10px;
         }
-        
         .grid-container::-webkit-scrollbar { width: 6px; }
         .grid-container::-webkit-scrollbar-track { background: transparent; }
         .grid-container::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 10px; }
 
         .grid-btn {
-            background: var(--option-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 8px;
-            height: 45px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            font-size: 1em;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s;
+            background: var(--option-bg); border: 1px solid var(--border-color); color: var(--text-main);
+            border-radius: 8px; height: 45px; display: flex; justify-content: center; align-items: center;
+            font-weight: bold; font-size: 1em; cursor: pointer; position: relative; transition: all 0.2s;
         }
         .grid-btn:hover { border-color: var(--accent); color: var(--accent); }
         .grid-btn.answered { background: var(--accent); color: white; border-color: var(--accent); }
         .grid-btn.current { box-shadow: 0 0 0 3px var(--text-main); }
         
         .grid-btn .flag-icon {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            color: #ffcc00;
-            font-size: 0.8em;
-            background: var(--card-bg);
-            border-radius: 50%;
-            padding: 2px;
-            display: none;
+            position: absolute; top: -5px; right: -5px; color: #ffcc00; font-size: 0.8em;
+            background: var(--card-bg); border-radius: 50%; padding: 2px; display: none;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .grid-btn.flagged .flag-icon { display: block; }
 
-        /* --- IMPRESSÃO (PDF) --- */
         #print-view { display: none; }
         @media print {
             body { background: white; color: black; padding: 0; }
             .top-bar, .container { max-width: 100%; padding: 0; }
-            #setup-screen, #quiz-screen, .action-buttons, .icon-btn, .modal-overlay { display: none !important; }
+            #setup-screen, #quiz-screen, .action-buttons, .icon-btn, .modal-overlay, #quiz-tabs { display: none !important; }
             #print-view { display: block !important; padding: 20px; font-family: Arial, sans-serif; }
-            
             .print-q-box { margin-bottom: 25px; border-bottom: 1px solid #ccc; padding-bottom: 15px; page-break-inside: avoid; }
             .print-q-topic { font-size: 0.85em; color: #555; text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
             .print-q-text { font-weight: bold; font-size: 1.1em; margin-bottom: 10px; }
@@ -516,12 +471,23 @@
     
     <div id="setup-screen">
         <h1 style="color: var(--accent);"><i class="ph-fill ph-student"></i> Simulado Pro</h1>
-        <p style="color: var(--text-muted); font-size: 1em; margin-bottom: 25px; text-align: center;">Carregue o arquivo do simulado:</p>
+        <p style="color: var(--text-muted); font-size: 1em; margin-bottom: 10px; text-align: center;">Carregue os arquivos do simulado (JSON):</p>
         
-        <input type="file" id="json-file" accept=".json" style="display: none;" onchange="handleFileUpload(event)">
-        <button class="btn-primary" onclick="abrirSeletorDeArquivo()"><i class="ph ph-folder-open"></i> Escolher Arquivo</button>
-        
-        <p id="file-name-display" style="color: var(--accent); font-size: 0.95em; margin-top: 15px; text-align: center; font-weight: bold;"></p>
+        <!-- NOVA INTERFACE DE MÚLTIPLOS UPLOADS -->
+        <div class="upload-container">
+            <div class="upload-box">
+                <p>Simulado Principal</p>
+                <input type="file" id="json-file-0" accept=".json" style="display: none;" onchange="handleFileUpload(event, 0)">
+                <button class="btn-primary" onclick="abrirSeletorDeArquivo(0)"><i class="ph ph-folder-open"></i> Arquivo 1</button>
+                <p id="file-name-display-0" class="file-name"></p>
+            </div>
+            <div class="upload-box">
+                <p>Segundo Simulado (Opcional)</p>
+                <input type="file" id="json-file-1" accept=".json" style="display: none;" onchange="handleFileUpload(event, 1)">
+                <button class="btn-secondary" onclick="abrirSeletorDeArquivo(1)"><i class="ph ph-plus-circle"></i> Arquivo 2</button>
+                <p id="file-name-display-1" class="file-name"></p>
+            </div>
+        </div>
         
         <div id="mode-selection" style="display: none; margin: 25px 0; text-align: center;">
             <label style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 8px; display: block;">Modo do Simulado:</label>
@@ -540,6 +506,12 @@
 
     <div id="quiz-screen" style="display: none;">
         
+        <!-- NOVO TABS PARA ALTERNAR ENTRE SIMULADOS -->
+        <div id="quiz-tabs" class="quiz-tabs" style="display: none;">
+            <button id="tab-0" class="tab-btn active" onclick="switchQuiz(0)">Simulado A</button>
+            <button id="tab-1" class="tab-btn" onclick="switchQuiz(1)">Simulado B</button>
+        </div>
+
         <div id="active-quiz">
             <div class="header">
                 <div style="display: flex; align-items: center; gap: 10px;">
@@ -548,7 +520,6 @@
                     <button class="icon-btn-small" onclick="toggleGridModal()" title="Mapa da Prova"><i class="ph-bold ph-squares-four"></i></button>
                 </div>
                 <div class="timer-container">
-                    <!-- Ícone de Alerta de Tempo Oculto -->
                     <i id="time-warning-icon" class="ph-fill ph-clock time-warning-blink" style="display:none; color: #ffcc00; font-size: 1.4em;" title="Atenção: Você está há mais de 3 minutos nesta questão!"></i>
                     <div class="timer" id="timer-display">00:00</div>
                     <button class="btn-pause" id="btn-pause" onclick="togglePause()"><i class="ph ph-pause"></i></button>
@@ -561,7 +532,6 @@
 
             <div id="q-content-area" style="transition: filter 0.3s;">
                 
-                <!-- Ferramentas Avançadas -->
                 <div class="q-header-tools">
                     <div class="question-topic" id="question-topic" style="display: none;"></div>
                     <div class="q-tools">
@@ -598,10 +568,7 @@
                 <button class="btn-primary" style="background-color: var(--success-border);" onclick="generatePDF()"><i class="ph ph-printer"></i> Salvar em PDF / Imprimir</button>
                 <button class="btn-secondary" style="border-color: var(--accent); color: var(--accent);" onclick="reviewQuiz()"><i class="ph ph-magnifying-glass"></i> Revisar Todas as Respostas</button>
                 <button class="btn-secondary" style="border-color: var(--error-border); color: var(--error-border);" id="btn-review-errors" onclick="reviewErrorsOnly()"><i class="ph ph-warning-circle"></i> Revisar Apenas Meus Erros</button>
-                
-                <!-- NOVO BOTÃO DE EXPORTAR ERROS -->
                 <button class="btn-secondary" style="border-color: #ff9500; color: #ff9500; display: none;" id="btn-export-errors" onclick="exportErrors()"><i class="ph ph-download-simple"></i> Exportar Caderno de Erros (JSON)</button>
-                
                 <button class="btn-secondary" onclick="restartQuiz()"><i class="ph ph-arrows-clockwise"></i> Fazer Novo Simulado</button>
             </div>
         </div>
@@ -624,20 +591,25 @@
 </div>
 
 <script>
+    // --- ESTADO GLOBAL ATIVO ---
     let questions = [];
     let userAnswers =[];
     let flaggedQuestions =[]; 
     let currentQ = 0;
-    let pendingJsonData = null;
-    
     let isExamMode = false; 
     let hasFinished = false; 
+    let timeElapsed = 0;
+    let currentQuestionTimeElapsed = 0;
+    let isReviewingErrors = false;
+    
+    // --- ESTADO MULTI-SIMULADO ---
+    let pendingJsonData =[null, null];
+    let fileNames = ["Simulado Principal", "Simulado Secundário"];
+    let quizzesState = [null, null]; 
+    let activeQuizIndex = 0;
 
     let timerInterval = null;
-    let timeElapsed = 0;
-    let currentQuestionTimeElapsed = 0; // NOVO: Tempo gasto APENAS na questão atual
     let isPaused = false;
-    let isReviewingErrors = false;
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     let isMuted = false;
@@ -645,6 +617,7 @@
     const ui = {
         setup: document.getElementById('setup-screen'),
         quiz: document.getElementById('quiz-screen'),
+        quizTabs: document.getElementById('quiz-tabs'),
         activeQuiz: document.getElementById('active-quiz'),
         resultArea: document.getElementById('result-area'),
         qContent: document.getElementById('q-content-area'),
@@ -657,7 +630,7 @@
         progress: document.getElementById('progress'),
         qNav: document.getElementById('q-nav'),
         timerDisplay: document.getElementById('timer-display'),
-        timeWarningIcon: document.getElementById('time-warning-icon'), // NOVO
+        timeWarningIcon: document.getElementById('time-warning-icon'),
         btnPause: document.getElementById('btn-pause'),
         btnTTS: document.getElementById('btn-tts'),
         btnFlag: document.getElementById('btn-flag'),
@@ -665,9 +638,8 @@
         avgTime: document.getElementById('avg-time'),
         finalScore: document.getElementById('final-score'),
         btnReviewErrors: document.getElementById('btn-review-errors'),
-        btnExportErrors: document.getElementById('btn-export-errors'), // NOVO
+        btnExportErrors: document.getElementById('btn-export-errors'),
         errorMsg: document.getElementById('error-msg'),
-        fileNameDisplay: document.getElementById('file-name-display'),
         startBtn: document.getElementById('start-btn'),
         printView: document.getElementById('print-view'),
         statsChart: document.getElementById('statsChart'),
@@ -683,37 +655,217 @@
             document.getElementById('btn-theme').innerHTML = '<i class="ph ph-moon"></i>';
         }
 
-        const savedData = localStorage.getItem('simulado_mobile_save');
+        // Tenta carregar o save novo (múltiplo)
+        const savedData = localStorage.getItem('simulado_multi_save');
         if (savedData) {
             try {
                 const data = JSON.parse(savedData);
-                if (data.questions && data.questions.length > 0) {
-                    if (confirm("Você tem um simulado salvo em andamento. Deseja continuar de onde parou?")) {
-                        questions = data.questions;
-                        userAnswers = data.userAnswers || new Array(questions.length).fill(null);
-                        flaggedQuestions = data.flaggedQuestions || new Array(questions.length).fill(false);
-                        currentQ = data.currentQ || 0;
-                        timeElapsed = data.timeElapsed || 0;
+                if (data.quizzesState && data.quizzesState.some(q => q !== null)) {
+                    if (confirm("Você tem simulados salvos em andamento. Deseja continuar de onde parou?")) {
+                        quizzesState = data.quizzesState;
+                        fileNames = data.fileNames || ["Simulado Principal", "Simulado Secundário"];
+                        activeQuizIndex = data.activeQuizIndex;
                         
-                        isExamMode = data.isExamMode || false;
-                        hasFinished = false;
-                        if(ui.simuladoMode) ui.simuladoMode.value = isExamMode ? 'prova' : 'estudo';
+                        restoreStateFromMemory(activeQuizIndex);
 
                         ui.setup.style.display = 'none';
                         ui.quiz.style.display = 'block';
-                        ui.activeQuiz.style.display = 'block';
-                        
-                        buildNavDropdown();
-                        loadQuestion('none');
-                        startTimer();
+                        updateTabsUI();
+
+                        if (hasFinished && !isReviewingErrors) {
+                            renderResults();
+                        } else {
+                            ui.activeQuiz.style.display = 'block';
+                            buildNavDropdown();
+                            loadQuestion('none');
+                            startTimer();
+                        }
                     } else {
                         clearSavedData();
                     }
                 }
-            } catch(e) { console.log('Erro ao carregar save'); }
+            } catch(e) { console.log('Erro ao carregar save', e); }
         }
     };
 
+    // --- LÓGICA DE SINCRONIZAÇÃO DE MEMÓRIA (MULTI-SIMULADO) ---
+    function saveCurrentStateToMemory() {
+        if (activeQuizIndex === null || !quizzesState[activeQuizIndex]) return;
+        quizzesState[activeQuizIndex] = {
+            questions: [...questions],
+            userAnswers: [...userAnswers],
+            flaggedQuestions: [...flaggedQuestions],
+            currentQ,
+            timeElapsed,
+            currentQuestionTimeElapsed,
+            isExamMode,
+            hasFinished,
+            isReviewingErrors
+        };
+    }
+
+    function restoreStateFromMemory(index) {
+        const state = quizzesState[index];
+        if (!state) return;
+        questions = state.questions;
+        userAnswers = state.userAnswers;
+        flaggedQuestions = state.flaggedQuestions;
+        currentQ = state.currentQ;
+        timeElapsed = state.timeElapsed;
+        currentQuestionTimeElapsed = state.currentQuestionTimeElapsed;
+        isExamMode = state.isExamMode;
+        hasFinished = state.hasFinished;
+        isReviewingErrors = state.isReviewingErrors;
+        activeQuizIndex = index;
+    }
+
+    function saveProgress() {
+        saveCurrentStateToMemory();
+        localStorage.setItem('simulado_multi_save', JSON.stringify({
+            quizzesState,
+            activeQuizIndex,
+            fileNames
+        }));
+    }
+
+    // --- UPLOAD DE DOIS ARQUIVOS ---
+    function abrirSeletorDeArquivo(index) {
+        const fileInput = document.getElementById('json-file-' + index);
+        fileInput.value = ''; 
+        fileInput.click();
+    }
+
+    function handleFileUpload(event, index) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const display = document.getElementById('file-name-display-' + index);
+        display.innerText = "Carregando...";
+        ui.errorMsg.style.display = "none";
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (!Array.isArray(data)) throw new Error("O arquivo deve conter uma lista[] de questões.");
+                const isValid = data.every(q => q.hasOwnProperty('text') && Array.isArray(q.options) && q.hasOwnProperty('correctIndex'));
+                if (!isValid) throw new Error("Estrutura inválida.");
+
+                pendingJsonData[index] = data;
+                fileNames[index] = file.name;
+                display.innerHTML = `<i class="ph ph-check-circle"></i> Carregado!`;
+                
+                // Se algum arquivo foi carregado, exibe os botões de início
+                if(pendingJsonData[0] || pendingJsonData[1]) {
+                    ui.modeSelection.style.display = "block"; 
+                    ui.startBtn.style.display = "block";
+                }
+                
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+            } catch (error) {
+                display.innerHTML = "<i class='ph ph-x-circle'></i> Erro no arquivo";
+                ui.errorMsg.innerText = "Erro ao carregar o arquivo " + (index+1) + ": " + error.message;
+                ui.errorMsg.style.display = "block";
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    function startQuiz() {
+        if (!pendingJsonData[0] && !pendingJsonData[1]) return;
+        
+        quizzesState = [null, null];
+        const mode = ui.simuladoMode.value === 'prova';
+
+        for(let i=0; i<2; i++) {
+            if(pendingJsonData[i]) {
+                const qs = shuffleArray([...pendingJsonData[i]]);
+                quizzesState[i] = {
+                    questions: qs,
+                    userAnswers: new Array(qs.length).fill(null),
+                    flaggedQuestions: new Array(qs.length).fill(false),
+                    currentQ: 0,
+                    timeElapsed: 0,
+                    currentQuestionTimeElapsed: 0,
+                    isExamMode: mode,
+                    hasFinished: false,
+                    isReviewingErrors: false
+                };
+            }
+        }
+        
+        activeQuizIndex = pendingJsonData[0] ? 0 : 1;
+        restoreStateFromMemory(activeQuizIndex);
+
+        ui.setup.style.display = 'none';
+        ui.quiz.style.display = 'block';
+        updateTabsUI();
+        
+        initGame();
+        startTimer();
+        saveProgress();
+    }
+
+    // --- ALTERNAR ENTRE SIMULADOS ---
+    function switchQuiz(index) {
+        if (index === activeQuizIndex) return;
+        if (!quizzesState[index]) return; // Impede clique se o simulado não foi carregado
+
+        saveCurrentStateToMemory();
+        stopTTS();
+        
+        // Remove a pausa ao alternar de aba para fluidez
+        isPaused = false;
+        ui.btnPause.innerHTML = '<i class="ph ph-pause"></i>';
+        ui.btnPause.style.color = "var(--text-main)";
+        ui.qContent.classList.remove('blurred-content');
+
+        restoreStateFromMemory(index);
+        updateTabsUI();
+
+        if (hasFinished && !isReviewingErrors) {
+            renderResults();
+        } else {
+            ui.activeQuiz.style.display = 'block';
+            ui.resultArea.style.display = 'none';
+            buildNavDropdown();
+            loadQuestion('none');
+            updateTimerDisplay();
+        }
+        
+        if (!hasFinished || isReviewingErrors) {
+            startTimer();
+        } else {
+            stopTimer();
+        }
+        saveProgress();
+    }
+
+    function updateTabsUI() {
+        // Só mostra a barra de abas se os dois arquivos foram enviados
+        if(quizzesState[0] !== null && quizzesState[1] !== null) {
+            ui.quizTabs.style.display = 'flex';
+            
+            document.getElementById('tab-0').classList.toggle('active', activeQuizIndex === 0);
+            document.getElementById('tab-1').classList.toggle('active', activeQuizIndex === 1);
+            
+            // Coloca os nomes originais dos arquivos nas abas
+            document.getElementById('tab-0').innerText = fileNames[0].replace('.json', '').substring(0, 18);
+            document.getElementById('tab-1').innerText = fileNames[1].replace('.json', '').substring(0, 18);
+        } else {
+            ui.quizTabs.style.display = 'none';
+        }
+    }
+
+    function initGame() {
+        ui.activeQuiz.style.display = 'block';
+        ui.resultArea.style.display = 'none';
+        buildNavDropdown();
+        loadQuestion('none');
+    }
+
+    // --- FUNCIONALIDADES INTACTAS (TUDO ABAIXO FICOU IGUAL, APENAS ATUALIZADO PARA USAR O ESTADO GLOBAL CORRETO) ---
+    
     function toggleTheme() {
         document.body.classList.toggle('light-theme');
         const isLight = document.body.classList.contains('light-theme');
@@ -735,8 +887,7 @@
 
     function toggleTTS() {
         if(window.speechSynthesis.speaking) {
-            stopTTS();
-            return;
+            stopTTS(); return;
         }
         if(isMuted) return;
 
@@ -744,18 +895,11 @@
         const stripHTML = (html) => { const tmp = document.createElement("DIV"); tmp.innerHTML = html; return tmp.textContent || tmp.innerText || ""; };
         
         let textToRead = stripHTML(q.text);
-
-        textToRead = textToRead.replace(/\bI\s*-/g, "Afirmativa 1: ");
-        textToRead = textToRead.replace(/\bII\s*-/g, "Afirmativa 2: ");
-        textToRead = textToRead.replace(/\bIII\s*-/g, "Afirmativa 3: ");
-        textToRead = textToRead.replace(/\bIV\s*-/g, "Afirmativa 4: ");
-        textToRead = textToRead.replace(/([0-9A-Fa-f]{2}):/g, "$1 ");
-
+        textToRead = textToRead.replace(/\bI\s*-/g, "Afirmativa 1: ").replace(/\bII\s*-/g, "Afirmativa 2: ").replace(/\bIII\s*-/g, "Afirmativa 3: ").replace(/\bIV\s*-/g, "Afirmativa 4: ").replace(/([0-9A-Fa-f]{2}):/g, "$1 ");
         textToRead += ". . Vamos às alternativas: . ";
 
         q.options.forEach((opt, idx) => {
-            let cleanOpt = stripHTML(opt);
-            cleanOpt = cleanOpt.replace(/^[a-eA-E][\.\)\-\s]/, ""); 
+            let cleanOpt = stripHTML(opt).replace(/^[a-eA-E][\.\)\-\s]/, ""); 
             textToRead += `Alternativa ${String.fromCharCode(65 + idx)}: ${cleanOpt}. . `;
         });
 
@@ -763,7 +907,6 @@
         utterance.lang = 'pt-BR';
         utterance.rate = 0.85; 
         utterance.pitch = 1.0; 
-        
         utterance.onend = () => stopTTS();
         
         ui.btnTTS.innerHTML = '<i class="ph-fill ph-stop"></i>';
@@ -771,61 +914,37 @@
         window.speechSynthesis.speak(utterance);
     }
 
-    // --- FUNÇÃO PARA PEDIR EXPLICAÇÃO DA IA ---
     function askAI() {
         const q = questions[currentQ];
-        
-        const stripHTML = (html) => { 
-            if (!html) return "";
-            const tmp = document.createElement("DIV"); 
-            tmp.innerHTML = html; 
-            return tmp.textContent || tmp.innerText || ""; 
-        };
+        const stripHTML = (html) => { if (!html) return ""; const tmp = document.createElement("DIV"); tmp.innerHTML = html; return tmp.textContent || tmp.innerText || ""; };
 
         let textToRead = stripHTML(q.text);
         let nomeDoAssunto = q.assunto || q.materia || q.disciplina || q.topico || q.categoria || "";
 
         let prompt = `Atue como um professor especialista com excelente didática. Por favor, me explique detalhadamente a questão abaixo.\n\n`;
-        
-        if (nomeDoAssunto && String(nomeDoAssunto).trim() !== "") {
-            prompt += `📌 Assunto: ${nomeDoAssunto}\n`;
-        }
+        if (nomeDoAssunto && String(nomeDoAssunto).trim() !== "") prompt += `📌 Assunto: ${nomeDoAssunto}\n`;
         prompt += `📝 Questão: ${textToRead}\n\nAlternativas:\n`;
 
-        q.options.forEach((opt, idx) => {
-            prompt += `${String.fromCharCode(65 + idx)}) ${stripHTML(opt)}\n`;
-        });
-
+        q.options.forEach((opt, idx) => { prompt += `${String.fromCharCode(65 + idx)}) ${stripHTML(opt)}\n`; });
         prompt += `\n✅ O gabarito correto é a letra ${String.fromCharCode(65 + q.correctIndex)}.\n`;
-
-        if (q.explanation && String(q.explanation).trim() !== "") {
-            prompt += `\n💡 Comentário original da questão: "${stripHTML(q.explanation)}"\n`;
-        }
-
+        if (q.explanation && String(q.explanation).trim() !== "") prompt += `\n💡 Comentário original da questão: "${stripHTML(q.explanation)}"\n`;
         prompt += `\nMinha dúvida: Ainda não entendi completamente. Pode me explicar o passo a passo lógico, mostrando os motivos que tornam a resposta certa correta, e detalhar os erros de cada uma das outras alternativas?`;
 
-        // Tenta copiar silenciosamente para a área de transferência
         try { navigator.clipboard.writeText(prompt); } catch(e) {}
-
-        // Abre o link do ChatGPT em nova aba já com o prompt escrito
         const url = `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
         window.open(url, '_blank');
     }
 
     function toggleFlag() {
         flaggedQuestions[currentQ] = !flaggedQuestions[currentQ];
-        updateFlagUI();
-        buildNavDropdown();
-        saveProgress();
+        updateFlagUI(); buildNavDropdown(); saveProgress();
     }
 
     function updateFlagUI() {
         if(flaggedQuestions[currentQ]) {
-            ui.btnFlag.innerHTML = '<i class="ph-fill ph-flag"></i>';
-            ui.btnFlag.classList.add('active');
+            ui.btnFlag.innerHTML = '<i class="ph-fill ph-flag"></i>'; ui.btnFlag.classList.add('active');
         } else {
-            ui.btnFlag.innerHTML = '<i class="ph ph-flag"></i>';
-            ui.btnFlag.classList.remove('active');
+            ui.btnFlag.innerHTML = '<i class="ph ph-flag"></i>'; ui.btnFlag.classList.remove('active');
         }
     }
 
@@ -838,14 +957,10 @@
         } else {
             gridContainer.innerHTML = '';
             questions.forEach((q, idx) => {
-                if(isReviewingErrors && (userAnswers[idx] === questions[idx].correctIndex || userAnswers[idx] === null)) {
-                    return;
-                }
-
+                if(isReviewingErrors && (userAnswers[idx] === questions[idx].correctIndex || userAnswers[idx] === null)) return;
                 const btn = document.createElement('button');
                 btn.className = 'grid-btn';
                 btn.innerText = idx + 1;
-
                 if (userAnswers[idx] !== null) btn.classList.add('answered');
                 if (idx === currentQ) btn.classList.add('current');
                 if (flaggedQuestions[idx]) btn.classList.add('flagged');
@@ -854,38 +969,27 @@
                 flag.className = 'ph-fill ph-flag flag-icon';
                 btn.appendChild(flag);
 
-                btn.onclick = () => {
-                    jumpToQuestion(idx);
-                    toggleGridModal();
-                };
+                btn.onclick = () => { jumpToQuestion(idx); toggleGridModal(); };
                 gridContainer.appendChild(btn);
             });
-
             modal.classList.add('active');
         }
     }
 
     window.addEventListener('click', (e) => {
         const modal = document.getElementById('grid-modal');
-        if (e.target === modal) {
-            toggleGridModal();
-        }
+        if (e.target === modal) toggleGridModal();
     });
 
     document.addEventListener('mouseup', () => {
         if (ui.activeQuiz.style.display === 'none' || isPaused) return;
-        
         const selection = window.getSelection();
         if (!selection.rangeCount || selection.isCollapsed) return;
-        
         const range = selection.getRangeAt(0);
         if (ui.qContent.contains(range.commonAncestorContainer)) {
             const span = document.createElement('mark');
             span.className = 'custom-highlight';
-            try {
-                range.surroundContents(span);
-                selection.removeAllRanges(); 
-            } catch(e) {}
+            try { range.surroundContents(span); selection.removeAllRanges(); } catch(e) {}
         }
     });
 
@@ -894,38 +998,28 @@
         if(audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        osc.connect(gain); gain.connect(audioCtx.destination);
         
         if(type === 'correct') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
             osc.start(); osc.stop(audioCtx.currentTime + 0.1);
         } else if (type === 'wrong') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
             osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
     }
 
     function clearSavedData() {
-        localStorage.removeItem('simulado_mobile_save');
+        localStorage.removeItem('simulado_multi_save');
+        localStorage.removeItem('simulado_mobile_save'); // limpa o antigo tbm
         ui.errorMsg.style.color = "var(--success-border)";
         ui.errorMsg.innerText = "Cache limpo com sucesso!";
         ui.errorMsg.style.display = "block";
         setTimeout(() => { ui.errorMsg.style.display = "none"; }, 3000);
-    }
-
-    function saveProgress() {
-        if(isReviewingErrors || hasFinished) return; 
-        const state = { questions, userAnswers, currentQ, timeElapsed, flaggedQuestions, isExamMode };
-        localStorage.setItem('simulado_mobile_save', JSON.stringify(state));
     }
 
     function shuffleArray(array) {
@@ -936,108 +1030,33 @@
         return array;
     }
 
-    function abrirSeletorDeArquivo() {
-        const fileInput = document.getElementById('json-file');
-        fileInput.value = ''; 
-        fileInput.click();
-    }
-
-    function handleFileUpload(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        ui.fileNameDisplay.innerText = "Carregando: " + file.name;
-        ui.errorMsg.style.display = "none";
-        ui.startBtn.style.display = "none";
-        ui.modeSelection.style.display = "none";
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const data = JSON.parse(e.target.result);
-                if (!Array.isArray(data)) throw new Error("O arquivo deve conter uma lista[] de questões.");
-                const isValid = data.every(q => q.hasOwnProperty('text') && Array.isArray(q.options) && q.hasOwnProperty('correctIndex'));
-                if (!isValid) throw new Error("Estrutura inválida. Verifique se o conteúdo possui o formato correto.");
-
-                pendingJsonData = data;
-                ui.fileNameDisplay.innerHTML = `<i class="ph ph-check-circle"></i> ${file.name} carregado!`;
-                ui.modeSelection.style.display = "block"; 
-                ui.startBtn.style.display = "block";
-                
-                if(audioCtx.state === 'suspended') audioCtx.resume();
-            } catch (error) {
-                ui.fileNameDisplay.innerHTML = "<i class='ph ph-x-circle'></i> Erro ao ler o arquivo";
-                ui.errorMsg.innerText = error.message;
-                ui.errorMsg.style.display = "block";
-                console.error("Erro na leitura do JSON:", error);
-            }
-        };
-        reader.readAsText(file);
-    }
-
-    function startQuiz() {
-        if (!pendingJsonData) return;
-        questions = shuffleArray(pendingJsonData);
-        userAnswers = new Array(questions.length).fill(null);
-        flaggedQuestions = new Array(questions.length).fill(false);
-        
-        isExamMode = ui.simuladoMode.value === 'prova';
-        hasFinished = false; 
-
-        timeElapsed = 0;
-        currentQuestionTimeElapsed = 0; // Reset
-        isReviewingErrors = false;
-        ui.setup.style.display = 'none';
-        ui.quiz.style.display = 'block';
-        initGame();
-        startTimer();
-        saveProgress();
-    }
-
-    function initGame() {
-        currentQ = 0;
-        ui.activeQuiz.style.display = 'block';
-        ui.resultArea.style.display = 'none';
-        buildNavDropdown();
-        loadQuestion('none');
-    }
-    
     function startTimer() {
         if (timerInterval) clearInterval(timerInterval);
         updateTimerDisplay();
         timerInterval = setInterval(() => {
             timeElapsed++;
-            currentQuestionTimeElapsed++; // Incrementa o timer específico da questão
-            
+            currentQuestionTimeElapsed++;
             updateTimerDisplay();
 
-            // Lógica do cronômetro invisível por questão (Aviso após 120 segundos = 2 min)
             if (currentQuestionTimeElapsed >= 120 && !isReviewingErrors && !hasFinished) {
                 ui.qContent.classList.add('time-pressure');
                 if (ui.timeWarningIcon) ui.timeWarningIcon.style.display = 'inline-block';
             }
-
             if(timeElapsed % 10 === 0) saveProgress(); 
         }, 1000);
     }
     
-    function stopTimer() {
-        if (timerInterval) clearInterval(timerInterval);
-    }
+    function stopTimer() { if (timerInterval) clearInterval(timerInterval); }
 
     function togglePause() {
         isPaused = !isPaused;
         stopTTS(); 
         if(isPaused) {
-            stopTimer();
-            ui.qContent.classList.add('blurred-content');
-            ui.btnPause.innerHTML = '<i class="ph-fill ph-play"></i>';
-            ui.btnPause.style.color = "var(--success-border)";
+            stopTimer(); ui.qContent.classList.add('blurred-content');
+            ui.btnPause.innerHTML = '<i class="ph-fill ph-play"></i>'; ui.btnPause.style.color = "var(--success-border)";
         } else {
-            startTimer();
-            ui.qContent.classList.remove('blurred-content');
-            ui.btnPause.innerHTML = '<i class="ph ph-pause"></i>';
-            ui.btnPause.style.color = "var(--text-main)";
+            startTimer(); ui.qContent.classList.remove('blurred-content');
+            ui.btnPause.innerHTML = '<i class="ph ph-pause"></i>'; ui.btnPause.style.color = "var(--text-main)";
         }
     }
     
@@ -1050,9 +1069,7 @@
     function buildNavDropdown() {
         ui.qNav.innerHTML = '';
         for(let i = 0; i < questions.length; i++) {
-            if(isReviewingErrors) {
-                if(userAnswers[i] === questions[i].correctIndex || userAnswers[i] === null) continue;
-            }
+            if(isReviewingErrors) { if(userAnswers[i] === questions[i].correctIndex || userAnswers[i] === null) continue; }
             const opt = document.createElement('option');
             opt.value = i;
             const status = userAnswers[i] !== null ? " ✓" : "";
@@ -1072,8 +1089,6 @@
 
     function loadQuestion(animationDirection = 'right') {
         stopTTS(); 
-        
-        // RESETAR AVISO DE TEMPO DA QUESTÃO
         currentQuestionTimeElapsed = 0; 
         ui.qContent.classList.remove('time-pressure');
         if (ui.timeWarningIcon) ui.timeWarningIcon.style.display = 'none';
@@ -1084,22 +1099,15 @@
         
         ui.qContent.classList.remove('slide-in-right', 'slide-in-left');
         void ui.qContent.offsetWidth; 
-        if(animationDirection !== 'none') {
-            ui.qContent.classList.add(animationDirection === 'right' ? 'slide-in-right' : 'slide-in-left');
-        }
+        if(animationDirection !== 'none') ui.qContent.classList.add(animationDirection === 'right' ? 'slide-in-right' : 'slide-in-left');
         
         let nomeDoAssunto = q.assunto || q.materia || q.disciplina || q.topico || q.categoria || "";
         if (nomeDoAssunto && String(nomeDoAssunto).trim() !== "") {
-            ui.qTopic.innerHTML = "<i class='ph-bold ph-tag'></i> " + nomeDoAssunto;
-            ui.qTopic.style.display = "inline-flex";
-        } else {
-            ui.qTopic.style.display = "none";
-        }
+            ui.qTopic.innerHTML = "<i class='ph-bold ph-tag'></i> " + nomeDoAssunto; ui.qTopic.style.display = "inline-flex";
+        } else { ui.qTopic.style.display = "none"; }
         
         ui.qText.innerHTML = q.text; 
-        ui.options.innerHTML = "";
-        ui.feedback.style.display = "none";
-        ui.nextBtn.style.display = "block";
+        ui.options.innerHTML = ""; ui.feedback.style.display = "none"; ui.nextBtn.style.display = "block";
         
         if(isReviewingErrors) {
             const errorOptions = Array.from(ui.qNav.options).map(o => parseInt(o.value));
@@ -1116,10 +1124,8 @@
         q.options.forEach((opt, index) => {
             const btn = document.createElement("button");
             btn.className = "option-btn";
-            
             let cleanOpt = opt.trim();
             let hasPrefix = /^[a-eA-E][\.\)\-\s]/.test(cleanOpt);
-            
             let prefixHtml = hasPrefix ? "" : `<span style="opacity:0.5; margin-right:8px; font-weight:bold;">${String.fromCharCode(65 + index)}.</span> `;
             
             btn.innerHTML = prefixHtml + cleanOpt; 
@@ -1127,23 +1133,16 @@
             ui.options.appendChild(btn);
         });
 
-        if (userAnswers[currentQ] !== null) {
-            restoreState(userAnswers[currentQ]);
-        }
-        
+        if (userAnswers[currentQ] !== null) restoreState(userAnswers[currentQ]);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function checkAnswer(selectedIndex) {
         if (isPaused) return; 
-
         if ((!isExamMode || hasFinished) && userAnswers[currentQ] !== null) return; 
-
         userAnswers[currentQ] = selectedIndex;
-        
         buildNavDropdown(); 
         ui.qNav.value = currentQ; 
-
         applyVisuals(selectedIndex, true); 
         saveProgress();
     }
@@ -1155,19 +1154,14 @@
         if (isExamMode && !hasFinished) {
             Array.from(btns).forEach((btn, idx) => {
                 btn.classList.remove("selected");
-                if (idx === selectedIndex) {
-                    btn.classList.add("selected");
-                }
+                if (idx === selectedIndex) btn.classList.add("selected");
             });
             ui.feedback.style.display = "none";
             ui.nextBtn.innerHTML = currentQ === questions.length - 1 ? 'Finalizar <i class="ph-fill ph-flag-checkered"></i>' : 'Próxima <i class="ph ph-arrow-right"></i>';
             return; 
         }
 
-        Array.from(btns).forEach(btn => {
-            btn.style.pointerEvents = "none";
-            btn.classList.remove("selected"); 
-        });
+        Array.from(btns).forEach(btn => { btn.style.pointerEvents = "none"; btn.classList.remove("selected"); });
 
         if(btns[q.correctIndex]) {
             btns[q.correctIndex].classList.add("correct");
@@ -1178,10 +1172,7 @@
         
         if (selectedIndex === q.correctIndex) {
             ui.feedback.innerHTML = `<i class="ph-fill ph-check-circle" style="color:var(--success-border); font-size:1.2em; vertical-align:middle;"></i> <strong style="color:var(--success-border);">Correto!</strong><br><span style='color:var(--text-muted); font-size: 0.9em; display:block; margin-top:8px;'>${q.explanation || ''}</span> ${aiButtonHTML}`;
-            if (isNewAnswer) {
-                playSound('correct');
-                triggerFireworks(1); 
-            }
+            if (isNewAnswer) { playSound('correct'); triggerFireworks(1); }
         } else {
             if(btns[selectedIndex]) {
                 btns[selectedIndex].classList.add("wrong");
@@ -1189,50 +1180,32 @@
             }
             ui.feedback.innerHTML = `<i class="ph-fill ph-x-circle" style="color:var(--error-border); font-size:1.2em; vertical-align:middle;"></i> <strong style="color:var(--error-border);">Incorreto.</strong><br><span style='color:var(--text-muted); font-size: 0.9em; display:block; margin-top:8px;'>${q.explanation || ''}</span> ${aiButtonHTML}`;
             if (isNewAnswer) {
-                playSound('wrong');
-                ui.qContent.classList.remove('shake-animation');
-                void ui.qContent.offsetWidth; 
-                ui.qContent.classList.add('shake-animation');
+                playSound('wrong'); ui.qContent.classList.remove('shake-animation');
+                void ui.qContent.offsetWidth; ui.qContent.classList.add('shake-animation');
             }
         }
 
         ui.feedback.style.display = "block";
-        
-        if(!isReviewingErrors) {
-            ui.nextBtn.innerHTML = currentQ === questions.length - 1 ? 'Ver Resultados <i class="ph-fill ph-chart-bar"></i>' : 'Próxima <i class="ph ph-arrow-right"></i>';
-        }
+        if(!isReviewingErrors) ui.nextBtn.innerHTML = currentQ === questions.length - 1 ? 'Ver Resultados <i class="ph-fill ph-chart-bar"></i>' : 'Próxima <i class="ph ph-arrow-right"></i>';
     }
 
-    function restoreState(selectedIndex) {
-        applyVisuals(selectedIndex, false);
-    }
+    function restoreState(selectedIndex) { applyVisuals(selectedIndex, false); }
 
     function nextQuestion() {
         if(isReviewingErrors) {
             const errorOptions = Array.from(ui.qNav.options).map(o => parseInt(o.value));
             const currentIndex = errorOptions.indexOf(currentQ);
-            if(currentIndex < errorOptions.length - 1) {
-                currentQ = errorOptions[currentIndex + 1];
-                loadQuestion('right');
-            } else {
-                ui.activeQuiz.style.display = 'none';
-                ui.resultArea.style.display = 'block';
-            }
+            if(currentIndex < errorOptions.length - 1) { currentQ = errorOptions[currentIndex + 1]; loadQuestion('right'); } 
+            else { renderResults(); }
             return;
         }
 
         if (currentQ < questions.length - 1) {
-            currentQ++;
-            loadQuestion('right');
-            saveProgress();
+            currentQ++; loadQuestion('right'); saveProgress();
         } else {
             if (isExamMode && !hasFinished) {
                 const blanks = userAnswers.filter(a => a === null).length;
-                if (blanks > 0) {
-                    if (!confirm(`Você tem ${blanks} questão(ões) em branco. Deseja finalizar o simulado mesmo assim?`)) {
-                        return; 
-                    }
-                }
+                if (blanks > 0) { if (!confirm(`Você tem ${blanks} questão(ões) em branco. Deseja finalizar o simulado mesmo assim?`)) return; }
             }
             finishQuiz();
         }
@@ -1242,97 +1215,71 @@
         if(isReviewingErrors) {
             const errorOptions = Array.from(ui.qNav.options).map(o => parseInt(o.value));
             const currentIndex = errorOptions.indexOf(currentQ);
-            if(currentIndex > 0) {
-                currentQ = errorOptions[currentIndex - 1];
-                loadQuestion('left');
-            }
+            if(currentIndex > 0) { currentQ = errorOptions[currentIndex - 1]; loadQuestion('left'); }
             return;
         }
 
-        if (currentQ > 0) {
-            currentQ--;
-            loadQuestion('left');
-            saveProgress();
-        }
+        if (currentQ > 0) { currentQ--; loadQuestion('left'); saveProgress(); }
     }
 
     function finishQuiz() {
-        stopTimer();
-        stopTTS();
+        stopTimer(); stopTTS();
         isReviewingErrors = false;
         hasFinished = true; 
+        saveCurrentStateToMemory();
+        saveProgress();
         
-        let score = 0; let wrong = 0; let blank = 0;
+        let score = 0;
+        userAnswers.forEach((ans, i) => { if (ans === questions[i].correctIndex) score++; });
+        if (score >= questions.length / 2) triggerFireworks(3); 
+        
+        renderResults();
+    }
 
-        userAnswers.forEach((ans, i) => { 
-            if (ans === questions[i].correctIndex) score++; 
-            else if (ans === null) blank++;
-            else wrong++;
-        });
-        
+    function renderResults() {
         ui.activeQuiz.style.display = 'none';
         ui.resultArea.style.display = 'block';
         
+        let score = 0; let wrong = 0; let blank = 0;
+        userAnswers.forEach((ans, i) => { 
+            if (ans === questions[i].correctIndex) score++; 
+            else if (ans === null) blank++; else wrong++;
+        });
+
         const m = String(Math.floor(timeElapsed / 60)).padStart(2, '0');
         const s = String(timeElapsed % 60).padStart(2, '0');
         ui.finalTime.innerText = `${m}m ${s}s`;
         
-        const avgSec = Math.round(timeElapsed / questions.length);
+        const avgSec = questions.length > 0 ? Math.round(timeElapsed / questions.length) : 0;
         ui.avgTime.innerText = `${avgSec} segundos`;
         ui.finalScore.innerText = `${score} / ${questions.length}`;
         
         ui.btnReviewErrors.style.display = wrong === 0 ? 'none' : 'block';
-        
-        // NOVO: Exibe o botão de exportar caso o aluno tenha errado algo ou deixado em branco
         ui.btnExportErrors.style.display = (wrong > 0 || blank > 0) ? 'block' : 'none';
-
-        localStorage.removeItem('simulado_mobile_save'); 
-        
-        if (score >= questions.length / 2) triggerFireworks(3); 
 
         renderChart(score, wrong, blank);
     }
 
-    // --- FUNÇÃO CORRIGIDA: EXPORTAR APENAS ERROS REAIS ---
     function exportErrors() {
-    // 1. Filtramos as questões
-    const incorrectQuestions = questions.filter((q, i) => {
-        const respostaDoUsuario = userAnswers[i];
+        const incorrectQuestions = questions.filter((q, i) => {
+            const respostaDoUsuario = userAnswers[i];
+            const gabaritoCorreto = q.correctIndex;
+            return respostaDoUsuario !== null && respostaDoUsuario !== gabaritoCorreto;
+        });
         
-        // IMPORTANTE: Usamos 'correctIndex' pois é assim que está no seu JSON
-        const gabaritoCorreto = q.correctIndex;
+        if (incorrectQuestions.length === 0) { alert("Você não possui erros para exportar."); return; }
 
-        // Só entra no caderno se:
-        // - O usuário respondeu (não é null)
-        // - A resposta (índice) for diferente do gabarito
-        return respostaDoUsuario !== null && respostaDoUsuario !== gabaritoCorreto;
-    });
-    
-    // 2. Validação de segurança
-    if (incorrectQuestions.length === 0) {
-        alert("Você não possui erros para exportar ou ainda não respondeu as questões.");
-        return;
+        const dataStr = JSON.stringify(incorrectQuestions, null, 2);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a'); a.href = url;
+        const dataFormatada = new Date().toISOString().slice(0, 10);
+        a.download = `meu_caderno_de_erros_${dataFormatada}.json`;
+        
+        document.body.appendChild(a); a.click();
+        setTimeout(() => { document.body.removeChild(a); window.URL.revokeObjectURL(url); }, 100);
     }
-
-    // 3. Processo de exportação (Download)
-    const dataStr = JSON.stringify(incorrectQuestions, null, 2);
-    const blob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    const dataFormatada = new Date().toISOString().slice(0, 10);
-    a.download = `meu_caderno_de_erros_${dataFormatada}.json`;
-    
-    document.body.appendChild(a);
-    a.click();
-    
-    // Limpeza
-    setTimeout(() => {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-    }, 100);
-}
 
     function renderChart(correct, wrong, blank) {
         if(chartInstance) chartInstance.destroy();
@@ -1344,66 +1291,46 @@
             type: 'doughnut',
             data: {
                 labels:['Acertos', 'Erros', 'Em Branco'],
-                datasets:[{
-                    data:[correct, wrong, blank],
-                    backgroundColor:['#34c759', '#ff3b30', '#888888'],
-                    borderWidth: 0
-                }]
+                datasets:[{ data:[correct, wrong, blank], backgroundColor:['#34c759', '#ff3b30', '#888888'], borderWidth: 0 }]
             },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: textColor } } } }
         });
     }
 
     function restartQuiz() {
-        if(confirm("Deseja voltar para a tela inicial e carregar outro simulado?")) {
-            localStorage.removeItem('simulado_mobile_save');
+        if(confirm("Deseja voltar para a tela inicial e carregar outros simulados?")) {
+            localStorage.removeItem('simulado_multi_save');
             location.reload(); 
         }
     }
 
     function reviewQuiz() {
         isReviewingErrors = false;
-        ui.resultArea.style.display = 'none';
-        ui.activeQuiz.style.display = 'block';
-        currentQ = 0;
-        buildNavDropdown();
-        loadQuestion('none');
+        ui.resultArea.style.display = 'none'; ui.activeQuiz.style.display = 'block';
+        currentQ = 0; buildNavDropdown(); loadQuestion('none');
     }
 
     function reviewErrorsOnly() {
         isReviewingErrors = true;
-        ui.resultArea.style.display = 'none';
-        ui.activeQuiz.style.display = 'block';
+        ui.resultArea.style.display = 'none'; ui.activeQuiz.style.display = 'block';
         buildNavDropdown();
         const errorOptions = Array.from(ui.qNav.options).map(o => parseInt(o.value));
-        if(errorOptions.length > 0) {
-            currentQ = errorOptions[0];
-            loadQuestion('none');
-        }
+        if(errorOptions.length > 0) { currentQ = errorOptions[0]; loadQuestion('none'); }
     }
 
     function updateProgress() {
-        const pct = ((currentQ + 1) / questions.length) * 100;
+        const pct = questions.length > 0 ? ((currentQ + 1) / questions.length) * 100 : 0;
         ui.progress.style.width = `${pct}%`;
     }
 
     let isMouseSwiping = false;
-
     window.addEventListener('wheel', (e) => {
         if (ui.activeQuiz.style.display === 'none' || isPaused) return;
-
         if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 40) {
             e.preventDefault(); 
-
             if (!isMouseSwiping) {
                 isMouseSwiping = true;
-                
-                if (e.deltaX > 0) {
-                    nextQuestion();
-                } else {
-                    prevQuestion();
-                }
-                
+                if (e.deltaX > 0) nextQuestion(); else prevQuestion();
                 setTimeout(() => { isMouseSwiping = false; }, 600);
             }
         }
@@ -1412,7 +1339,6 @@
     function triggerFireworks(intensity = 1) {
         var duration = intensity === 1 ? 500 : 2500;
         var end = Date.now() + duration;
-
         (function frame() {
             confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors:['#0066cc', '#34c759', '#ffffff'] });
             confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors:['#0066cc', '#34c759', '#ffffff'] });
@@ -1426,7 +1352,7 @@
         
         let html = `
             <div class="print-header">
-                <h1>Relatório do Simulado Pro</h1>
+                <h1>Relatório do ${fileNames[activeQuizIndex].replace('.json','')}</h1>
                 <p><strong>Desempenho:</strong> ${score} acertos de ${questions.length} questões</p>
                 <p><strong>Tempo total:</strong> ${ui.finalTime.innerText} | <strong>Média:</strong> ${ui.avgTime.innerText}</p>
                 <p><em>Data: ${new Date().toLocaleDateString('pt-BR')}</em></p>
@@ -1438,9 +1364,7 @@
             html += `<div class="print-q-box">`;
             
             let nomeDoAssunto = q.assunto || q.materia || q.disciplina || q.topico || q.categoria || "";
-            if(nomeDoAssunto && String(nomeDoAssunto).trim() !== "") {
-                html += `<div class="print-q-topic">📌 ${nomeDoAssunto}</div>`;
-            }
+            if(nomeDoAssunto && String(nomeDoAssunto).trim() !== "") html += `<div class="print-q-topic">📌 ${nomeDoAssunto}</div>`;
 
             html += `<div class="print-q-text">${qIndex + 1}. ${q.text}</div>`;
             
@@ -1449,22 +1373,14 @@
                 let prefix = String.fromCharCode(65 + optIndex) + ") ";
                 let icon = "";
                 
-                if (optIndex === q.correctIndex) {
-                    cssClass += " correct"; icon = "✔️ ";
-                } else if (optIndex === userAnswer) {
-                    cssClass += " wrong"; icon = "❌ ";
-                }
+                if (optIndex === q.correctIndex) { cssClass += " correct"; icon = "✔️ "; } 
+                else if (optIndex === userAnswer) { cssClass += " wrong"; icon = "❌ "; }
                 
                 html += `<div class="${cssClass}"><strong>${prefix}</strong>${icon}${opt}</div>`;
             });
             
-            if (userAnswer === null) {
-                html += `<div style="color: #d9534f; margin-top: 5px; font-weight: bold;">Questão deixada em branco.</div>`;
-            }
-            
-            if (q.explanation) {
-                html += `<div style="margin-top: 10px; font-style: italic; color: #555;"><strong>Explicação:</strong> ${q.explanation}</div>`;
-            }
+            if (userAnswer === null) html += `<div style="color: #d9534f; margin-top: 5px; font-weight: bold;">Questão deixada em branco.</div>`;
+            if (q.explanation) html += `<div style="margin-top: 10px; font-style: italic; color: #555;"><strong>Explicação:</strong> ${q.explanation}</div>`;
             
             html += `</div>`;
         });
